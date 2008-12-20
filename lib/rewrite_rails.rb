@@ -40,6 +40,7 @@ module RewriteRails
       rr = File.read(path)
       sexp = PARSER.parse_tree_for_string(rr, path).first
       sexp = Sexp.from_array sexp
+      sexp = Rewrite.from_sexp(sexp)
       rb = Ruby2Ruby.new.process(sexp)
       File.open(target_path, 'w') do |f|
         f.write(rb)
