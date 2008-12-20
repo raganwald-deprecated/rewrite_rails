@@ -6,6 +6,10 @@ require 'sexp_processor'
 require 'unified_ruby'
 require 'ruby2ruby'
 
+class Unifier
+  include UnifiedRuby
+end
+
 module RewriteRails
   
   def self.hook_the_hook!
@@ -33,13 +37,15 @@ module RewriteRails
   end  
 
   PARSER = ParseTree.new(false) # no newline nodes
+  UNIFIER = Unifier.new
     
   def self.rewrite_file(path)
     if File.file?(path)
       target_path = "#{path[/^(.*)\.rr$/,1]}.rb"
       rr = File.read(path)
       sexp = PARSER.parse_tree_for_string(rr, path).first
-      sexp = Sexp.from_array sexp
+      sexp = Sexp.from_array(sexp)
+      sexp = UNIFIER.process(sexp)
       sexp = Rewrite.from_sexp(sexp)
       rb = Ruby2Ruby.new.process(sexp)
       File.open(target_path, 'w') do |f|
