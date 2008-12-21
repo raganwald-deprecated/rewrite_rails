@@ -65,14 +65,22 @@ module RewriteRails
     rb_path = target_path(File.join(root, "#{rr_path_suffix[/^(.*)\.rr$/,1]}.rb"))
     File.makedirs(File.dirname(rb_path))
     rr = File.read(rr_path)
-    sexp = PARSER.parse_tree_for_string(rr, rr_path).first
-    sexp = Sexp.from_array(sexp)
-    sexp = UNIFIER.process(sexp)
-    sexp = Rewrite.from_sexp(sexp)
-    rb = Ruby2Ruby.new.process(sexp)
+    raw_sexp = PARSER.parse_tree_for_string(rr, rr_path).first
+    rewritten_sexp = rewrite_sexp(raw_sexp)
+    rb = Ruby2Ruby.new.process(rewritten_sexp)
     File.open(rb_path, 'w') do |f|
       f.write(rb)
     end
+  end
+  
+  def self.clean(sexp = nil, &block)
+    sexp ||= Rewrite.sexp_for(&block)
+    sexp = Sexp.from_array(sexp)
+    sexp = UNIFIER.process(sexp)
+  end
+  
+  def self.rewrite_sexp(sexp)
+    sexp = Rewrite.from_sexp(clean(sexp))
   end
   
   def self.expanded_rails_root

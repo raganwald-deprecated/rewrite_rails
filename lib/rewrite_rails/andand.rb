@@ -101,7 +101,7 @@ s(:iter,
     end
     
     def matches_andand_invocation(sexp)
-      sexp[0] == :call && sexp[2] == :andand
+      sexp.respond_to?(:[]) && sexp[0] == :call && sexp[2] == :andand
     end
     
   end
