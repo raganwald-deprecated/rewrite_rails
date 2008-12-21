@@ -12,7 +12,7 @@ My personal message to you:
 
 > First, do you consider opening core classes like `Object` and `String` to be a problem? Second, do you want syntactic abstractions like `#andand`, `#try`, or `Symbol#to_proc` in your project? And third, if you want to use them and you consider opening core classes to be a problem, is `RewriteRails` the best solution to the problem?
 
-> I can only answer ONE of those questions for you at a time. We aren't going to get anywhere if I am explaining why opening core classes is a problem while you are thinking that what you really need is a way to federate your application across the cloud, not a way to simplify the expression `MyModel.find(:all, ...).map { |model| model.name }`. Likewise, if you dislike `foo.try(:bar)`, what is the point of discussing th difference between implementing `#try` as syntax rather than as a method?
+> I can only answer ONE of those questions for you at a time. We aren't going to get anywhere if I am explaining why opening core classes is a problem while you are thinking that what you really need is a way to federate your application across the cloud, not a way to simplify the expression `MyModel.find(:all, ...).map { |model| model.name }`. Likewise, if you dislike `foo.try(:bar)`, what is the point of discussing the difference between implementing `#try` as syntax rather than as a method?
 
 > Therefore, I am assuming that you have already embraced the idea that the proliferation of additions to core classes like `Object` and `String` is unsustainable. This explanation assumes that you have embraced syntactic abstractions such as `#andand` and `Symbol#to_proc`, but are looking for a way to use existing abstractions or add new ones without opening core classes.
 
