@@ -34,19 +34,45 @@ s(:iter,
 =end
     def process_iter(exp)
       exp.shift
-      receiver_sexp = exp.first #[:call, [:call, [:lit, 1..10], :andand], :inject]
-      if receiver_sexp[0] == :call && matches_andand_invocation(receiver_sexp[1])
+      sub_expression = exp.first #[:call, [:call, [:lit, 1..10], :andand], :inject]
+      if sub_expression[0] == :call && matches_andand_invocation(sub_expression[1])
         exp.shift
-        mono_parameter = Rewrite.gensym()
+        receiver_expr = process_inner_expr(sub_expression[1][1])
+        if truthy?(receiver_expr)
+          begin
+            return s(:iter, 
+              s(:call, 
+                receiver_expr, 
+                *(sub_expression[2..-1].map { |inner| process_inner_expr(inner) })
+              ), 
+              *(exp.map { |inner| process_inner_expr(inner) })
+            )
+          ensure
+            exp.clear
+          end
+        elsif falsy?(receiver_expr)
+          begin
+            return receiver_expr
+          ensure
+            exp.clear
+          end
+        elsif (receiver_expr.first == :lvar)
+          lhs_and = receiver_expr.dup
+          new_receiver = receiver_expr.dup
+        else
+          mono_parameter = Rewrite.gensym()
+          lhs_and = s(:lasgn, mono_parameter, receiver_expr)
+          new_receiver = s(:lvar, mono_parameter)
+        end
         s(:and, 
-          s(:lasgn, mono_parameter, process_inner_expr(receiver_sexp[1][1])),
+          lhs_and,
           begin
             s(:iter, 
               s(:call, 
-                s(:lvar, mono_parameter), 
-                *(receiver_sexp[2..-1].map { |inner| process_inner_expr inner })
+                new_receiver, 
+                *(sub_expression[2..-1].map { |inner| process_inner_expr(inner) })
               ), 
-              *(exp.map { |inner| process_inner_expr inner })
+              *(exp.map { |inner| process_inner_expr(inner) })
             )
           ensure
             exp.clear
@@ -62,22 +88,50 @@ s(:iter,
         end
       end
     end
-
+    
+=begin
+  [:and, 
+    [s(:lasgn, :__TEMP__, s(:call, nil, :foo, s(:arglist))), s(:lvar, :__TEMP__)], 
+    [:call, [:lvar, :__TEMP__], :bar, [:arglist]]
+  ]
+=end
     def process_call(exp)
       # s(:call, s(:call, s(:lit, :foo), :andand), :bar)
       exp.shift
       # s(s(:call, s(:lit, :foo), :andand), :bar)
-      receiver_sexp = exp.first
-      if matches_andand_invocation(receiver_sexp) # s(:call, s(:lit, :foo), :andand)
+      sub_expression = exp.first
+      if matches_andand_invocation(sub_expression) # s(:call, s(:lit, :foo), :andand)
         exp.shift
         # s( :bar )
-        mono_parameter = Rewrite.gensym()
+        receiver_expr = process_inner_expr(sub_expression[1])
+        if truthy?(receiver_expr)
+          begin
+            return s(:call, 
+              receiver_expr,
+              *(exp.map { |inner| process_inner_expr(inner) }))
+          ensure
+            exp.clear
+          end
+        elsif falsy?(receiver_expr)
+          begin
+            return receiver_expr
+          ensure
+            exp.clear
+          end
+        elsif (receiver_expr.first == :lvar)
+          lhs_and = receiver_expr
+          new_receiver = receiver_expr
+        else
+          mono_parameter = Rewrite.gensym()
+          lhs_and = s(:lasgn, mono_parameter, receiver_expr)
+          new_receiver = s(:lvar, mono_parameter)
+        end
         s(:and, 
-          s(:lasgn, mono_parameter, process_inner_expr(receiver_sexp[1])),
+          lhs_and,
           begin
             s(:call, 
-              s(:lvar, mono_parameter),
-              *(exp.map { |inner| process_inner_expr inner }))
+              new_receiver,
+              *(exp.map { |inner| process_inner_expr(inner) }))
           ensure
             exp.clear
           end
@@ -86,7 +140,7 @@ s(:iter,
         # pass through
         begin
           s(:call,
-            *(exp.map { |inner| process_inner_expr inner })
+            *(exp.map { |inner| process_inner_expr(inner) })
           )
         ensure
           exp.clear
@@ -95,6 +149,14 @@ s(:iter,
     end
     
     private 
+    
+    def truthy?(sexp)
+      sexp.respond_to?(:[]) && (sexp[0] == :true || sexp[0] == :lit || sexp[0] == :str || sexp[0] == :array)
+    end
+    
+    def falsy?(sexp)
+      sexp.respond_to?(:[]) && (sexp[0] == :nil || sexp[0] == :false)
+    end
     
     def process_inner_expr(inner)
         inner.kind_of?(Array) ? process(inner) : inner

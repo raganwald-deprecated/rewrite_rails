@@ -60,6 +60,10 @@ module RewriteRails
         node
       end
     end
+    
+    def self.dup_s(sexp)
+      recursive_s(sexp.to_a)
+    end
   
   end
   
