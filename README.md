@@ -3,7 +3,7 @@ The RewriteRails Plug-In
 
 This is an experiment in performing global rewriting for Rails projects. 
 
-Should Care You Care?
+Should You Care?
 ---
 
 My personal message to you:
