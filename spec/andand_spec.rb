@@ -22,8 +22,8 @@ describe RewriteRails::Andand do
   describe "current functionality" do
   
     it "should rewrite an empty method invocation" do
-      @it.process(RewriteRails.clean { foo.andand.bar }).to_a.should == RewriteRails.clean do
-        (__TEMP__ = foo and __TEMP__.bar)
+      @it.process(RewriteRails.clean { foo().andand.bar }).to_a.should == RewriteRails.clean do
+        (__TEMP__ = foo() and __TEMP__.bar)
       end.to_a
     end
 
@@ -53,27 +53,63 @@ describe RewriteRails::Andand do
   
   end
   
-  describe "future optimizations" do
+  describe "non-critical optimizations" do
     
     it "should not create a temporary for a variable lookup" do
-      pending "unimplemented"
       foo = nil
       @it.process(RewriteRails.clean { foo.andand.bar }).to_a.should == RewriteRails.clean do
         (foo and foo.bar)
       end.to_a
     end
     
-    it "should NOOP for a truthy literal" do
-      pending "unimplemented"
-      @it.process(RewriteRails.clean { 42.andand.bar }).to_a.should == RewriteRails.clean do
-        42.bar
-      end.to_a
+    describe "truthy literals" do
+      it "should handle true" do
+        @it.process(RewriteRails.clean { true.andand.bar }).to_a.should == RewriteRails.clean do
+          true.bar
+        end.to_a
+      end
+      it "should handle a number" do
+        @it.process(RewriteRails.clean { 42.andand.bar }).to_a.should == RewriteRails.clean do
+          42.bar
+        end.to_a
+      end
+      it "should handle a string" do
+        @it.process(RewriteRails.clean { 'true'.andand.bar }).to_a.should == RewriteRails.clean do
+          'true'.bar
+        end.to_a
+      end
+      it "should handle a symbol" do
+        @it.process(RewriteRails.clean { :true.andand.bar }).to_a.should == RewriteRails.clean do
+          :true.bar
+        end.to_a 
+      end
+      it "should handle an array" do
+        @it.process(RewriteRails.clean { [:true].andand.bar }).to_a.should == RewriteRails.clean do
+          [:true].bar
+        end.to_a 
+      end
+      it "should handle an empty array" do
+        @it.process(RewriteRails.clean { [].andand.bar }).to_a.should == RewriteRails.clean do
+          [].bar
+        end.to_a 
+      end
     end
     
     it "should NOOP for a falsy literal" do
-      pending "unimplemented"
       @it.process(RewriteRails.clean { nil.andand.bar }).to_a.should == RewriteRails.clean do
         nil
+      end.to_a
+      @it.process(RewriteRails.clean { false.andand.bar }).to_a.should == RewriteRails.clean do
+        false
+      end.to_a
+    end
+    
+    it "should NOOP for a falsy literal with a block" do
+      @it.process(RewriteRails.clean { nil.andand.bar { :bar } }).to_a.should == RewriteRails.clean do
+        nil
+      end.to_a
+      @it.process(RewriteRails.clean { false.andand.bar { :bar } }).to_a.should == RewriteRails.clean do
+        false
       end.to_a
     end
     
