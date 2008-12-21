@@ -1,7 +1,7 @@
 The RewriteRails Plug-In
 ========================
 
-This is an experiment in performing global rewriting for Rails projects. Where the rewrite gem allows you to rewrite specific blocks of code and to treat rewriters as first-class entities for meta-meta-programming, `RewriteRails` simply rewrites entire files with a known set of rewriters.
+This is an experiment in performing global rewriting for Rails projects. 
 
 Why You Should Care
 ---
@@ -46,6 +46,10 @@ By default, the rewritten files are stored in the `rewritten` directory of your 
 *	**I don't want to install all those gems on my server**
 
 Thanks for reminding me. TODO: A rake task to recursively rewrite everything, plus a way to turn rewriting off in production.
+
+*	**How does this differ from the rewrite gem?**
+
+Where the rewrite gem allows you to rewrite specific blocks of code and to treat rewriters as first-class entities for meta-meta-programming, `RewriteRails` simply rewrites entire files with a known set of rewriters.
 
 Installation
 ------------
