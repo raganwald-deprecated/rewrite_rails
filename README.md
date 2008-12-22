@@ -55,11 +55,20 @@ By default, the rewritten files are stored in the `rewritten` directory of your 
 
 *	**I don't want to install all those gems on my server**
 
-Thanks for reminding me. TODO: A rake task to recursively rewrite everything, plus a way to turn rewriting off in production.
+This is not finished yet, but it is a work in progress:
+
+1. Run `rake rewrite:prepare`. This will recursively rewrite all of the `.rr` files in your project so that it is not necessary to run them in production.
+2. TODO: A configuration option that will ignore `.rr` options at run time for certain named environments, something like a controller filter.
 
 *	**How does this differ from the rewrite gem?**
 
 Where the rewrite gem allows you to rewrite specific blocks of code and to treat rewriters as first-class entities for meta-meta-programming, `RewriteRails` simply rewrites entire files with a known set of rewriters.
+
+*	**That was fun, but we hired a new architect who has decided make his mark by criticizing all of our decisions and insists we stop all new development while we migrate it out of our million line project. Are we fuxxored?**
+
+Your new smartest guy in the room might be fuxxored, but your code is safe. Simply run `rake rewrite:prepare rewritten=.` This does the `prepare` task that rewrites all of your code in place, but instead of placing the resulting `.rb` files in a hierarchy in the `rewritten` folder, it places them all in a hierarchy in the root of your project. Which means, they go right next to the .rr files. You can now remove the rewrite plugin and carry on. Removing the out-dated `.rr` files from the command line shouldn't be a problem for your new smart fellow.
+
+The summary is that you can experiment with `RewriteRails` as much as you like, but you are not painting yourself into a corner. You can escape to standard Ruby at any time.
 
 Installation
 ------------
