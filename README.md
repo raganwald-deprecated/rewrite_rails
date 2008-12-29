@@ -66,7 +66,7 @@ Where the rewrite gem allows you to rewrite specific blocks of code and to treat
 
 *	**That was fun, but we hired a new architect who has decided make his mark by criticizing all of our decisions and insists we stop all new development while we migrate it out of our million line project. Are we fuxxored?**
 
-Your new smartest guy in the room might be fuxxored, but your code is safe. Simply run `rake rewrite:prepare rewritten=.` This does the `prepare` task that rewrites all of your code in place, but instead of placing the resulting `.rb` files in a hierarchy in the `rewritten` folder, it places them all in a hierarchy in the root of your project. Which means, they go right next to the .rr files. You can now remove the rewrite plugin and carry on. Removing the out-dated `.rr` files from the command line shouldn't be a problem for your new smart fellow.
+Your new smartest guy in the room might be fuxxored, but your code is safe. Simply run `rake rewrite:all rewritten=.` This does the `prepare` task that rewrites all of your code in place, but instead of placing the resulting `.rb` files in a hierarchy in the `rewritten` folder, it places them all in a hierarchy in the root of your project. Which means, they go right next to the .rr files. You can now remove the rewrite plugin and carry on. Removing the out-dated `.rr` files from the command line shouldn't be a problem for your new smart fellow.
 
 The summary is that you can experiment with `RewriteRails` as much as you like, but you are not painting yourself into a corner. You can escape to standard Ruby at any time.
 
