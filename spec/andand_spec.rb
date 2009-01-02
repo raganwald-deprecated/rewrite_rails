@@ -19,6 +19,27 @@ describe RewriteRails::Andand do
     @it.process(RewriteRails.clean { 5.bar(5) do; end }).to_a.should == RewriteRails.clean { 5.bar(5) do; end }.to_a
   end
   
+  describe "bug hunt!" do
+    it "should work" do
+      buzz = nil
+      @it.process(RewriteRails.clean { buzz.andand.to_s || 'nada!' }).to_a.should == RewriteRails.clean do
+        (buzz and buzz.to_s) || 'nada!'
+      end.to_a
+    end
+    it "should also work" do
+      foo = nil
+      @it.process(RewriteRails.clean { 
+        def foo.bar(buzz)
+          buzz.andand.to_s || 'nada!' 
+        end
+      }).to_a.should == RewriteRails.clean do
+        def foo.bar(buzz)
+          (buzz and buzz.to_s) || 'nada!'
+        end
+      end.to_a
+    end
+  end
+  
   describe "current functionality" do
   
     it "should rewrite an empty method invocation" do

@@ -88,7 +88,11 @@ module RewriteRails
     private 
     
     def process_inner_expr(inner)
-        inner.kind_of?(Array) ? process(inner) : inner
+      if inner.kind_of?(Array)
+        process(inner)
+      else
+        inner
+      end
     end
     
     def extract_target_string(sexp)

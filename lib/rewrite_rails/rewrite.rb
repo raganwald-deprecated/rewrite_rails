@@ -9,8 +9,9 @@ module RewriteRails
   module Rewrite
   
     def self.from_sexp(sexp)
-      sexp = Andand.new.process(sexp)
-      sexp = StringToBlock.new.process(sexp)
+      [Andand, StringToBlock].inject(sexp) do |acc, rewrite_class|
+        eval(rewrite_class.new.process(acc).to_s)
+      end
     end
     
     class << self
