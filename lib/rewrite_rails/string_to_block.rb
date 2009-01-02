@@ -118,12 +118,12 @@ module RewriteRails
           rightSection = expr.match(/[+\-*\/%&|\^\.=<>!]\s*$/m)
           if leftSection || rightSection then
               if (leftSection) then
-                  params.push('$left')
-                  expr = '$left' + expr
+                  params.push('_0')
+                  expr = '_0' + expr
               end
               if (rightSection) then
-                  params.push('$right')
-                  expr = expr + '$right'
+                  params.push('_1')
+                  expr = expr + '_1'
               end
           else
               proc_str.gsub(

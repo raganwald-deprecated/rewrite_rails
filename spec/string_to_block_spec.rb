@@ -23,7 +23,22 @@ describe RewriteRails::StringToBlock do
   end
   
   it "should process procs with one implied parameter" do
-    @it.process(RewriteRails.clean { foo.bar(&'* 2') }).to_a.should == RewriteRails.clean { foo.bar() { |$left| $left * 2 } }.to_a
+    @it.process(RewriteRails.clean { foo.bar(&'* 2') }).to_a.should == RewriteRails.clean { foo.bar() { |_0| _0 * 2 } }.to_a
+  end
+  
+  it "should process procs with two implied parameters" do
+    @it.process(RewriteRails.clean { (1..10).inject(&'+') }).to_a.should == RewriteRails.clean {
+        (1..10).inject { |_0, _1| _0 + _1 }
+      }.to_a
+  end
+  
+  it "should be recursive" do # ".inject(&'+')"
+    @it.process(RewriteRails.clean { [1..5, 6..10].map(&".inject(&'+')") }).to_a.should == 
+      RewriteRails.clean {
+        [1..5, 6..10].map { |_0| 
+          _0.inject { |_0, _1| _0 + _1 }
+        }
+      }.to_a
   end
   
 end

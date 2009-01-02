@@ -76,7 +76,8 @@ module RewriteRails
   def self.clean(sexp = nil, &block)
     sexp ||= Rewrite.sexp_for(&block)
     sexp = Sexp.from_array(sexp)
-    sexp = UNIFIER.process(sexp)
+    str = sexp.to_s
+    UNIFIER.process(sexp) rescue eval(str)
   end
   
   def self.rewrite_sexp(sexp)
