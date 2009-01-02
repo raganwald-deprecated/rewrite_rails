@@ -10,6 +10,7 @@ module RewriteRails
   
     def self.from_sexp(sexp)
       sexp = Andand.new.process(sexp)
+      sexp = StringToProc.new.process(sexp)
     end
     
     class << self
