@@ -6,17 +6,11 @@ RewriteRails adds syntactic abstractions like [Andand](http://github.com/raganwa
 Should You Care?
 ---
 
-I am a firm believer that I am only responsible for "Making One Sale." There are a number of questions you need to answer for yourself:
+If you're already using gems like `Object#andand` or `String#to_proc`, RewriteRails is absolutely for you. You can continue to do what you're already doing, but your rails code will be faster and you will never have to worry about some gems conflicting with each other and with ActiveSupport as it grows.
 
-First, do you consider opening core classes like `Object` and `String` to be a problem? Second, do you want syntactic abstractions like `#andand`, `#try`, or `Symbol#to_proc` in your project? And third, if you want to use them and you consider opening core classes to be a problem, is `RewriteRails` the best solution to the problem?
+If you have considered using `Object#andand` or `String#to_proc`, but hesitated because you are worried about encumbering classes like `Object` and `String` with even more methods, RewriteRails is for you. You get to use these powerful constructs without monkey-patching. You read that right. **RewriteRails is a No Monkey-Patching Zone**.
 
-I can only answer ONE of those questions for you at a time. We aren't going to get anywhere if I am explaining why opening core classes is a problem while you are thinking that what you really need is a way to federate your application across the cloud, not a way to simplify the expression `MyModel.find(:all, ...).map { |model| model.name }`. Likewise, if you dislike `foo.try(:bar)`, what is the point of discussing the difference between implementing `#try` as syntax rather than as a method?
-
-Therefore, I am assuming that you have already embraced the idea that the proliferation of additions to core classes like `Object` and `String` is unsustainable. This explanation assumes that you have embraced syntactic abstractions such as `#andand` and `Symbol#to_proc`, but are looking for a way to use existing abstractions or add new ones without opening core classes.
-
-If you are perfectly happy with the unrestricted growth of core classes and/or see no need for syntactic abstractions, my opinion is that this plug-in is not for your project at this time. However...
-
-If you want the power and convenience without the head-aches. RewriteRails is for you.
+*If you want the power and convenience without the head-aches. RewriteRails is for you.*
 
 Q & A
 -----
