@@ -23,7 +23,7 @@ Q & A
 
 *	**How does it work?**
 
-Install the `RewriteRails` plugin and all of its dependancies. You can write ruby files as usual (e.g. `foo_bar.rb`), and things will work as usual. You can also have `RewritRails` rewrite your files for you. Anything with the suffix `.rr` will be rewritten.
+Install the `RewriteRails` plugin and its dependancies (see below). You can write ruby files as usual (e.g. `foo_bar.rb`), and things will work as usual. You can also have `RewriteRails` rewrite your files for you. Any file with the suffix `.rr` will be rewritten.
 
 *	**Clear as mud. What does it mean to "rewrite" a file?**
 
@@ -47,11 +47,11 @@ This way, rewriting can be added to an existing project without breaking existin
 
 *	**How do I know what will be rewritten?**
 
-That will be documented. Eventually.
+Consult the `docs` folder. Every rewriter gets its own page.
 
 *	**How can I see what the result looks like?**
 
-By default, the rewritten files are stored in the `rewritten` directory of your project.
+By default, the rewritten files are stored in the `rewritten` directory of your project. So if you create a file called `foo.rr` in `lib` directory, you will find a file called `foo.rb` in `rewritten/lib`
 
 *	**I don't want to install all those gems on my server**
 
@@ -70,10 +70,12 @@ Your new smartest guy in the room might be fuxxored, but your code is safe. Simp
 
 The summary is that you can experiment with `RewriteRails` as much as you like, but you are not painting yourself into a corner. You can escape to standard Ruby at any time.
 
-Installation
+Installation and Dependencies
 ------------
 
-It isn't ready yet, but when it is, you will simply clone it into your `vendor/plugins` directory.
+1. `sudo gem install ParseTree`
+2. `sudo gem install ruby2ruby`
+3. Clone this project into the `vendor/plugins` directory of your project.
 
 Legal
 -----

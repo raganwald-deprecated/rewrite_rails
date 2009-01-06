@@ -1,0 +1,68 @@
+h1. Andand
+
+h2. What
+
+_Andand_ lets us write:
+
+<pre syntax="ruby">
+@phone = Location.find(:first, ...elided... ).andand.phone
+</pre>And it is rewritten as:
+
+<pre syntax="ruby">
+@phone = (__TEMP721347__ = Location.find(:first, ...elided... ) and __TEMP721347__.phone)
+</pre>This gives us a _guarded method invocation_ or _safe navigation method_. This snippet performs a @.find@ on the Location class, then sends @.phone@ to the result _if the result is not nil_. If the result is nil, then the expression returns nil without throwing a NoMethodError.
+
+As Dejan Simic "put it":http://rors.org/2008/3/18/andand:
+
+Why would you want to write this:
+
+<pre syntax="ruby">
+entry.at('description') && entry.at('description').inner_text
+</pre>when you can write this:
+
+<pre syntax="ruby">
+entry.at('description').andand.inner_text
+</pre>Why indeed!
+
+h2. The basics
+
+h3. The idea behind Andand
+
+Ruby programmers are familiar with the two _guarded assignment_ operators @&&=@ and @||=@. The typical use for them is when you have a variable that might be nil. For example:
+
+<pre syntax="ruby">
+first_name &&= @first_name.trim
+@phone ||= '612-777-9311'
+</pre>You are trimming the first name provided it isn’t nil, and you are assigning ‘612-777-9311’ to the phone if it _is_ nil (or false, but that isn’t important right now). One day a colleague and I were discussing the guards and we agreed that we wished there was a _guarded method invocation_ operator. Here’s an example of when you would use it:
+
+<pre syntax="ruby">
+@phone = Location.find(:first, ...elided... )&&.phone
+</pre>Meaning, search the location table for the first record matching some criteria, and if you find a location, get its phone. If you don’t, get nil. (Groovy provides this exact functionality, although Groovy uses @?.@ instead of @&&.@) However, @&&.@ won’t work because @&&.@ is not a real Ruby operator.
+
+Andand let&rsquo;s us write:
+
+<pre syntax="ruby">
+@phone = Location.find(:first, ...elided... ).andand.phone
+</pre>And it does the same thing by rewriting the code into ordinary Ruby. Because you accept any method using Ruby’s method invocation syntax, Andand also lets us write methods with parameters and/or blocks:
+
+<pre syntax="ruby">
+list_of_lists.detect { ...elided... }.andand.inject(42) { ...elided ... }
+</pre>Object#andand emphasizes syntactic regularity: the goal was to make an @&&.@ operation that worked like @&&=@. @&&=@ looks just like normal assignment, you can use any expression on the RHS, only the semantics are different. The andand method also works just like a normal method invocation, only the semantics are modified.
+
+And there's a third form, a little like the @and@ keyword and the @return@ method's illegitimate love child:
+
+<pre syntax="ruby">
+Location.find(:first, ...elided... ).andand do |phone|
+  phone.call
+  directory << phone
+  phone.area_code
+end
+</pre>
+
+h2. A little more background
+
+"Object#andand & Object#me in Ruby":http://weblog.raganwald.com/2008/01/objectandand-objectme-in-ruby.html explains the original motivations, as well as providing links to similar implementations you may want to consider. A few people have pointed out that Object#andand is similar to Haskell's Maybe monad. "The Maybe Monad in Ruby":http://blog.pretheory.com/arch/2008/02/the_maybe_monad_in_ruby.php is a good introduction for Ruby programmers.
+
+h2. Shout Out
+
+"Mobile Commons":http://mcommons.com/. Huge.
