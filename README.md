@@ -21,7 +21,7 @@ My personal message to you:
 Q & A
 -----
 
-*	**How does it work?**
+**How does it work?**
 
 Install the `RewriteRails` plugin in your Rails project and the gems ParseTree and Ruby2Ruby (in your system or frozen into your project). You can write ruby files as usual (e.g. `foo_bar.rb`), and things will work as usual. You can also have `RewriteRails` rewrite Ruby files for you. Any file with the suffix `.rr` will be "rewritten."
 
@@ -31,11 +31,11 @@ Currently, the rewriters are things that could be implemented by opening core cl
 
 By default, the rewritten files are stored in the `rewritten` directory of your project. So if you create a file called `foo.rr` in `lib` directory, you will find a file called `foo.rb` in `rewritten/lib`. This means you can always see what RewriteRuby is doing, and if you want to stop using it you have 100% working Ruby files.
 
-*	**How do I know what will be rewritten?**
+**How do I know what will be rewritten?**
 
 Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/doc). Every rewriter gets its own page. At the moment, those are [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile") and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md "doc/string_to_block.md").More will be added as I write them or port them from the old rewrite gem.
 
-*	**I like this for development, but I don't want to install all those gems on my server**
+**I like this for development, but I don't want to install all those gems on my server**
 
 1. Run `rake rewrite:prepare`. This will recursively rewrite all of the `.rr` files in your project so that it is not necessary to run them in production.
 2. Do not install the RewriteRuby plugin on your server.
@@ -48,11 +48,11 @@ Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/d
 
 Now in production files will not be rewritten but Rails will automatically load the rewritten files fromt he `rewritten` directory. (TODO: Automate this.) 
 
-*	**How does this differ from the rewrite gem?**
+**How does this differ from the rewrite gem?**
 
 Where the rewrite gem allows you to rewrite specific blocks of code and to treat rewriters as first-class entities for meta-meta-programming, `RewriteRails` simply rewrites entire files with a known set of rewriters.
 
-*	**That was fun, but we hired a new architect who has decided make his mark by criticizing all of our decisions and insists we stop all new development while we migrate it out of our million line project. Are we fuxxored?**
+**That was fun, but we hired a new architect who has decided make his mark by criticizing all of our decisions and insists we stop all new development while we migrate it out of our million line project. Are we fuxxored?**
 
 Your new smartest guy in the room might be fuxxored, but your code is safe. Simply run `rake rewrite:all rewritten=.` This does the `prepare` task that rewrites all of your code in place, but instead of placing the resulting `.rb` files in a hierarchy in the `rewritten` folder, it places them all in a hierarchy in the root of your project. Which means, they go right next to the .rr files. You can now remove the rewrite plugin and carry on. Removing the out-dated `.rr` files from the command line shouldn't be a problem for your new smart fellow.
 
