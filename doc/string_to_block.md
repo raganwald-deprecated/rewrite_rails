@@ -16,7 +16,7 @@ This is obviously much faster at run time and more importantly, does not cause a
 gives
 ---
 
-First, *String to Block* provides several key abbreviations: First,	`->` syntax for blocks in Ruby 1.8. So instead of `(1..100).inject { |x,y| x + y }`, you can write `(1..100).inject(&'x,y -> x + y')`. I read this out loud as "*x and y gives x plus y*."If the `->` seems foreign, it is only because `->` is in keeping with modern functional languages and mathematical notation.
+*String to Block* provides several key abbreviations: First,	`->` syntax for blocks in Ruby 1.8. So instead of `(1..100).inject { |x,y| x + y }`, you can write `(1..100).inject(&'x,y -> x + y')`. I read this out loud as "*x and y gives x plus y*."If the `->` seems foreign, it is only because `->` is in keeping with modern functional languages and mathematical notation.
 
 Gives isn't a particularly big deal considering how easy it is to write an old-fashioned block, it's a lot more handy when doing really functional things. But it's included so that you can make code that's aristocratic.
 
@@ -85,7 +85,7 @@ Unlike `String#to_proc`, *String to Block* is strictly for blcoks. If you want a
 When should we use all these tricks?
 ---
 
-*String to Block* provides these options so that you as a programmer can choose your level of ceremony around writing functions. But of course, you have to use the tool wisely. My *personal* rules of thumb are:
+*String to Block* provides these options so that you as a programmer can choose your level of ceremony around writing blocks. But of course, you have to use the tool wisely. My *personal* rules of thumb are:
 
 1.	Embrace inferred parameters for well-known mathematical or logical operations. For these operations, descriptive parameter names are usually superfluous. Follow the well-known standard and use `x`, `y`, `z`, and `w`;  or `a`, `b` and `c`; or `n`, `i`, `j`, and `k` for the parameters. If whatever it is makes no sense using those variable names, don't used inferred parameters.
 1.	Embrace the hole for extremely simple one-parameter lambdas that aren't intrinsically mathematical or logical such as methods that use `.method_name` and for the identity function.
