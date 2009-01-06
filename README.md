@@ -46,7 +46,7 @@ Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/d
   * `config.load_paths += %W( #{RAILS_ROOT}/rewritten/app/lib )`
   * ...and any other directories where you might place `.rr` files
 
-Now in production files will not be rewritten but Rails will automatically load the rewritten files fromt he `rewritten` directory. (TODO: Automate this.) 
+Now in production files will not be rewritten but Rails will automatically load the rewritten files from the `rewritten` directory. (TODO: Automate this.) 
 
 **How does this differ from the rewrite gem?**
 
