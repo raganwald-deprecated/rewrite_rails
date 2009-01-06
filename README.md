@@ -1,22 +1,22 @@
 The RewriteRails Plug-In
 ========================
 
-This is an experiment in performing global rewriting for Rails projects. 
+RewriteRails adds syntactic abstractions like [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "") and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md "") to Rails projects without monkey-patching. All of the power and convenience, none of the compatibility woes and head-aches.
 
 Should You Care?
 ---
 
-My personal message to you:
+I am a firm believer that I am only responsible for "Making One Sale." There are a number of questions you need to answer for yourself:
 
-> I am a firm believer that I am only responsible for "Making One Sale." There are a number of questions you need to answer for yourself:
+First, do you consider opening core classes like `Object` and `String` to be a problem? Second, do you want syntactic abstractions like `#andand`, `#try`, or `Symbol#to_proc` in your project? And third, if you want to use them and you consider opening core classes to be a problem, is `RewriteRails` the best solution to the problem?
 
-> First, do you consider opening core classes like `Object` and `String` to be a problem? Second, do you want syntactic abstractions like `#andand`, `#try`, or `Symbol#to_proc` in your project? And third, if you want to use them and you consider opening core classes to be a problem, is `RewriteRails` the best solution to the problem?
+I can only answer ONE of those questions for you at a time. We aren't going to get anywhere if I am explaining why opening core classes is a problem while you are thinking that what you really need is a way to federate your application across the cloud, not a way to simplify the expression `MyModel.find(:all, ...).map { |model| model.name }`. Likewise, if you dislike `foo.try(:bar)`, what is the point of discussing the difference between implementing `#try` as syntax rather than as a method?
 
-> I can only answer ONE of those questions for you at a time. We aren't going to get anywhere if I am explaining why opening core classes is a problem while you are thinking that what you really need is a way to federate your application across the cloud, not a way to simplify the expression `MyModel.find(:all, ...).map { |model| model.name }`. Likewise, if you dislike `foo.try(:bar)`, what is the point of discussing the difference between implementing `#try` as syntax rather than as a method?
+Therefore, I am assuming that you have already embraced the idea that the proliferation of additions to core classes like `Object` and `String` is unsustainable. This explanation assumes that you have embraced syntactic abstractions such as `#andand` and `Symbol#to_proc`, but are looking for a way to use existing abstractions or add new ones without opening core classes.
 
-> Therefore, I am assuming that you have already embraced the idea that the proliferation of additions to core classes like `Object` and `String` is unsustainable. This explanation assumes that you have embraced syntactic abstractions such as `#andand` and `Symbol#to_proc`, but are looking for a way to use existing abstractions or add new ones without opening core classes.
+If you are perfectly happy with the unrestricted growth of core classes and/or see no need for syntactic abstractions, my opinion is that this plug-in is not for your project at this time. However...
 
-> If you are perfectly happy with the unrestricted growth of core classes and/or see no need for syntactic abstractions, my opinion is that this plug-in is not for your project at this time.
+If you want the power and convenience without the head-aches. RewriteRails is for you.
 
 Q & A
 -----
