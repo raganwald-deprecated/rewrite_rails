@@ -23,42 +23,30 @@ Q & A
 
 *	**How does it work?**
 
-Install the `RewriteRails` plugin and its dependancies (see below). You can write ruby files as usual (e.g. `foo_bar.rb`), and things will work as usual. You can also have `RewriteRails` rewrite your files for you. Any file with the suffix `.rr` will be rewritten.
+Install the `RewriteRails` plugin in your Rails project and the gems ParseTree and Ruby2Ruby (in your system or frozen into your project). You can write ruby files as usual (e.g. `foo_bar.rb`), and things will work as usual. You can also have `RewriteRails` rewrite Ruby files for you. Any file with the suffix `.rr` will be "rewritten."
 
-*	**Clear as mud. What does it mean to "rewrite" a file?**
+RewriteRuby takes your `.rr` files and scans them with *rewriters*. Each rewriter looks for a certain kind of Ruby code and rewrites it into another kind of Ruby code. This produces the same effect as a C Preprocessor, a C++ template, or a Lisp Macro.
 
-Certain idioms are recognized as macros and rewritten when the file is first loaded. The canonical example is that:
+Currently, the rewriters are things that could be implemented by opening core classes and performing metaprogramming wizardry, but implementing them as rewriters means that you have higher performance and fewer conflicts with existing code.
 
-	foo.andand.map(&:bar)
-
-Will be rewritten as:
-
-	(foo and foo.map(&:bar))
-	
-And:
-
-	FooModel.find(:first, ...).andand.bar
-
-Will be rewritten as:
-
-	(__123456789__ = FooModel.find(:all, ...) and __123456789__.bar)
-
-This way, rewriting can be added to an existing project without breaking existing code. You can even have some files use the existing `andand` while new code uses the rewriting version.
+By default, the rewritten files are stored in the `rewritten` directory of your project. So if you create a file called `foo.rr` in `lib` directory, you will find a file called `foo.rb` in `rewritten/lib`. This means you can always see what RewriteRuby is doing, and if you want to stop using it you have 100% working Ruby files.
 
 *	**How do I know what will be rewritten?**
 
 Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/doc). Every rewriter gets its own page. At the moment, those are [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile") and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md "doc/string_to_block.md").More will be added as I write them or port them from the old rewrite gem.
 
-*	**How can I see what the result looks like?**
-
-By default, the rewritten files are stored in the `rewritten` directory of your project. So if you create a file called `foo.rr` in `lib` directory, you will find a file called `foo.rb` in `rewritten/lib`
-
-*	**I don't want to install all those gems on my server**
-
-This is not finished yet, but it is a work in progress:
+*	**I like this for development, but I don't want to install all those gems on my server**
 
 1. Run `rake rewrite:prepare`. This will recursively rewrite all of the `.rr` files in your project so that it is not necessary to run them in production.
-2. TODO: A configuration option that will ignore `.rr` options at run time for certain named environments, something like a controller filter.
+2. Do not install the RewriteRuby plugin on your server.
+3. Open up `config/environments/production.rb` and add the following lines
+  * `config.load_paths += %W( #{RAILS_ROOT}/rewritten/app/controllers )`
+  * `config.load_paths += %W( #{RAILS_ROOT}/rewritten/app/helpers )`
+  * `config.load_paths += %W( #{RAILS_ROOT}/rewritten/app/models )`
+  * `config.load_paths += %W( #{RAILS_ROOT}/rewritten/app/lib )`
+  * ...and any other directories where you might place `.rr` files
+
+Now in production files will not be rewritten but Rails will automatically load the rewritten files fromt he `rewritten` directory. (TODO: Automate this.) 
 
 *	**How does this differ from the rewrite gem?**
 
