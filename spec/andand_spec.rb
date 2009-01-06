@@ -19,6 +19,109 @@ describe RewriteRails::Andand do
     @it.process(RewriteRails.clean { 5.bar(5) do; end }).to_a.should == RewriteRails.clean { 5.bar(5) do; end }.to_a
   end
   
+  describe "andand with blocks" do
+    
+    describe "a block with one argument" do
+      
+      before(:each) do
+        @source = RewriteRails.clean do
+          :foo.andand { |fu| 
+            bar = fu
+            'foo' 
+          }
+        end
+        @target = RewriteRails.clean do
+          (fu = :foo and begin
+            bar = fu
+            'foo'
+          end)
+        end
+      end
+      
+      it "should turn the expression into a block" do
+        @it.process(@source).to_a.should == @target.to_a
+      end
+      
+    end
+    
+    describe "A block with just one statement" do
+      
+      before(:each) do
+        @source = RewriteRails.clean do
+          'foo'.andand { |fu| 
+            fu + 'bar' 
+          }
+        end
+        @target = RewriteRails.clean do
+          (fu = 'foo' and fu + 'bar')
+        end
+      end
+      
+      it "should turn the expression into a block" do
+        @it.process(@source).to_a.should == @target.to_a
+      end
+      
+    end
+    
+    describe "A degenerate block with no statement" do
+      
+      before(:each) do
+        @source = RewriteRails.clean do
+          'foo'.andand { |fu| }
+        end
+        @target = RewriteRails.clean do
+          'foo'
+        end
+      end
+      
+      it "should turn the expression into a simple exposition" do
+        @it.process(@source).to_a.should == @target.to_a
+      end
+      
+    end
+    
+    describe "A degenerate block with no parameter and one statement" do
+      
+      before(:each) do
+        @source = RewriteRails.clean do
+          'foo'.andand { :bar }
+        end
+        @target = RewriteRails.clean do
+          'foo' and :bar
+        end
+      end
+      
+      it "should turn the expression into a simple exposition" do
+        @it.process(@source).to_a.should == @target.to_a
+      end
+      
+    end
+    
+    describe "A degenerate block with no parameter and multiple statements" do
+      
+      before(:each) do
+        @source = RewriteRails.clean do
+          'foo'.andand do
+            bar()
+            blitz()
+          end
+        end
+        @target = RewriteRails.clean do
+          'foo' and begin
+            bar()
+            blitz()
+          end
+        end
+      end
+      
+      it "should turn the expression into a simple exposition" do
+        @it.process(@source).to_a.should == @target.to_a
+      end
+      
+    end
+    
+  end
+  
   describe "bug hunt!" do
     it "should work" do
       buzz = nil

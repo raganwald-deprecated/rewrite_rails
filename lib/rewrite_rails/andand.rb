@@ -35,6 +35,7 @@ s(:iter,
     def process_iter(exp)
       exp.shift
       sub_expression = exp.first #[:call, [:call, [:lit, 1..10], :andand], :inject]
+      # or: [:call, [:lit, :foo], :andand, [:arglist]]
       if sub_expression[0] == :call && matches_andand_invocation(sub_expression[1])
         exp.shift
         receiver_expr = process_inner_expr(sub_expression[1][1])
@@ -78,6 +79,21 @@ s(:iter,
             exp.clear
           end
         )
+      elsif matches_andand_block_invocation(sub_expression) # [:call, [:lit, :foo], :andand, [:arglist]]
+        target_sexp = process_inner_expr(sub_expression[1])
+        exp.shift
+        potential_assignment = exp.shift
+        param_sym = if potential_assignment.respond_to?(:first) && potential_assignment.first == :lasgn
+          potential_assignment.last
+        end
+        remainder = exp.shift and s(:and,
+          (param_sym ? s(:lasgn, param_sym, target_sexp) : target_sexp),
+          if remainder.respond_to?(:first) && remainder.first == :block
+            s(:block, *(remainder[1..-1].map { |inner| process_inner_expr(inner) }))
+          else
+            process_inner_expr(remainder)
+          end
+        ) or target_sexp
       else
         begin
           s(:iter,
@@ -164,6 +180,10 @@ s(:iter,
     
     def matches_andand_invocation(sexp)
       sexp.respond_to?(:[]) && sexp[0] == :call && sexp[2] == :andand
+    end
+    
+    def matches_andand_block_invocation(sexp)
+      matches_andand_invocation(sexp) && sexp.last.to_a == [:arglist]
     end
     
   end
