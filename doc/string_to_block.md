@@ -80,7 +80,7 @@ Meaning "*I want a block that does an inject using plus*." Point-free style does
 Blocks not Procs
 ---
 
-Unlike `String#to_proc`, *String to Block* is strictly for blcoks. If you want a lambda, write `lambda(&'x,y -> x + y')`.
+Unlike `String#to_proc`, *String to Block* is strictly for blocks. If you want a lambda, write `lambda(&'x,y -> x + y')`.
 
 When should we use all these tricks?
 ---
