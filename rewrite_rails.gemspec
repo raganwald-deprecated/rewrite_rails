@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = "rewrite_rails"
-  s.version  = "0.0.1"
+  s.version  = "2009.01.06"
   s.date     = "2009-01-06"
   s.summary  = "Code rewriting for Ruby on Rails projects"
   s.email    = "reg@braythwayt.com"
@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 "README.md",
 "lib/rewrite_rails.rb",
 "lib/andand.rb",
-"log/string_to_block.rb",
+"lib/string_to_block.rb",
 "tasks/rewrite.rake"]
   s.test_files = [
 "spec/andand_spec.rb",

@@ -47,7 +47,7 @@ This way, rewriting can be added to an existing project without breaking existin
 
 *	**How do I know what will be rewritten?**
 
-Consult the `docs` folder. Every rewriter gets its own page.
+Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/doc). Every rewriter gets its own page. At the moment, those are [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile") and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md "doc/string_to_block.md").More will be added as I write them or port them from the old rewrite gem.
 
 *	**How can I see what the result looks like?**
 

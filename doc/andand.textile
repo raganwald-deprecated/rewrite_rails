@@ -43,7 +43,7 @@ Andand let&rsquo;s us write:
 
 <pre syntax="ruby">
 @phone = (__TEMP721347__ = Location.find(:first, ...elided... ) and __TEMP721347__.phone)
-</pre>TBecause you accept any method using Ruby’s method invocation syntax, Andand also lets us write methods with parameters and/or blocks:
+</pre>Because you accept any method using Ruby’s method invocation syntax, _Andand_ also lets us write methods with parameters and/or blocks:
 
 <pre syntax="ruby">
 list_of_lists.detect { ...elided... }.andand.inject(42) { ...elided ... }
