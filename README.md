@@ -1,7 +1,7 @@
 The RewriteRails Plug-In
 ========================
 
-This is an experiment in performing global rewriting for Rails projects. 
+RewriteRails adds syntactic abstractions like [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "") and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md "") to Rails projects without monkey-patching. All of the power and convenience, none of the compatibility woes and head-aches.
 
 Should You Care?
 ---
