@@ -1,9 +1,1 @@
-# Include hook code here
-
-RewriteRails
-
-ActiveSupport::Dependencies.unhook!
-
-RewriteRails.hook_the_hook!
-
-ActiveSupport::Dependencies.hook!
+require File.expand_path(File.dirname(__FILE__), 'rails', 'init.rb')
