@@ -1,7 +1,7 @@
 Into
 ===
 
-In [No Detail Too Small](http://weblog.raganwald.com/2008/01/no-detail-too-small.html), Object#into` was defined as a Ruby method using monkey-patching:
+In [No Detail Too Small](http://weblog.raganwald.com/2008/01/no-detail-too-small.html), `Object#into` was defined as a Ruby method using monkey-patching:
 
     class Object
       def into expr = nil
