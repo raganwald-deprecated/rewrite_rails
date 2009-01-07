@@ -84,6 +84,12 @@ module RewriteRails
     sexp = Rewrite.from_sexp(clean(sexp))
   end
   
+  def self.to_ruby(sexp = nil, &block)
+    rewritten_sexp = rewrite_sexp(clean(sexp, &block))
+    rewritten_sexp = eval(rewritten_sexp.to_s) # i STILL don't know why i need this!!
+    rb = Ruby2Ruby.new.process(rewritten_sexp)
+  end
+  
   def self.expanded_rails_root
     @expanded_rails_root ||= File.expand_path(RAILS_ROOT)
   end

@@ -27,7 +27,7 @@ By default, the rewritten files are stored in the `rewritten` directory of your 
 
 **How do I know what will be rewritten?**
 
-Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/doc). Every rewriter gets its own page. At the moment, those are [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile") and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md "doc/string_to_block.md"). More will be added as I write them or port them from the old rewrite gem.
+Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/doc). Every rewriter gets its own page. At the moment, those are [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile"), [Into](ttp://github.com/raganwald/rewrite_rails/tree/master/doc/into.md) and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md "doc/string_to_block.md"). More will be added as I write them or port them from the old rewrite gem.
 
 **I like this for development, but I don't want to install all those gems on my server**
 

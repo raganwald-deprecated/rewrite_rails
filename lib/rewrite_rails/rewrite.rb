@@ -9,7 +9,7 @@ module RewriteRails
   module Rewrite
   
     def self.from_sexp(sexp)
-      [Andand, StringToBlock].inject(sexp) do |acc, rewrite_class|
+      [Andand, StringToBlock, Into].inject(sexp) do |acc, rewrite_class|
         eval(rewrite_class.new.process(acc).to_s)
       end
     end
