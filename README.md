@@ -78,7 +78,7 @@ Where the rewrite gem allows you to rewrite specific blocks of code and to treat
 
 First, it's better for you tomorrow. If in the distant future there is some problem that breaks Rewrite (like changes to its dependencies or to MRI), you have your .rb files intact and working.
 
-Second, it's better for you today. If someone else goes wild with monkey-patching, it won't break any of your rewritten code.
+Second, it's better for you *today*. If someone else goes wild with monkey-patching, it won't break any of your rewritten code.
 
 **There must be some reason to prefer rewriting on the fly instead of rewriting files!**
 
