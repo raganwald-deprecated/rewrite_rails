@@ -1,7 +1,7 @@
 The RewriteRails Plug-In
 ========================
 
-The [RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master) plug-in adds syntactic abstractions like [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "") and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md "") to Rails projects without monkey-patching. All of the power and convenience, none of the compatibility woes and head-aches.
+The [RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master) plug-in adds syntactic abstractions like [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "") and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md "") to Rails projects [without monkey-patching](http://avdi.org/devblog/2008/02/23/why-monkeypatching-is-destroying-ruby/ "Monkeypatching is Destroying Ruby"). All of the power and convenience, none of the compatibility woes and head-aches.
 
 Should You Care?
 ---
@@ -21,7 +21,7 @@ Install the `RewriteRails` plugin in your Rails project and the gems ParseTree a
 
 RewriteRails takes your `.rr` files and scans them with *rewriters*. Each rewriter looks for a certain kind of Ruby code and rewrites it into another kind of Ruby code. This produces the same effect as a C Preprocessor, a C++ template, or a Lisp Macro.
 
-Currently, the rewriters are things that could be implemented by opening core classes and monkey-patching, but implementing them as rewriters means that you have higher performance and fewer conflicts with existing code.
+Currently, the rewriters are things that could be implemented by opening core classes and monkey-patching, but implementing them as rewriters means that you have higher performance and [fewer conflicts with existing code](http://blog.lawrencepit.com/2009/01/11/try-as-you-might/ "Try() as you might").
 
 By default, the rewritten files are stored in the `rewritten` directory of your project. So if you create a file called `foo.rr` in `lib` directory, you will find a file called `foo.rb` in `rewritten/lib`. This means you can always see what RewriteRails is doing, and if you want to stop using it you have 100% working Ruby files.
 
