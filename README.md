@@ -70,6 +70,10 @@ In other words, you can write `.rb` files whenever you want and as long as they 
 
 Now when you run your project in production, the `.rr` files will not be rewritten on the fly, but Rails will continue to find the rewritten `.rb` files in the `rewritten` directory. You don't have to do anything else, you won't need ParseTree, Ruby2Ruby, or RewriteRails on your production servers.
 
+**How do I use RewriteRails in my templates?**
+
+At this time I haven't figured out how to make rewriting work in erb or haml templates. I think the template engine itself has to be hooked rather than working with the files.
+
 **How does this differ from the rewrite gem?**
 
 Where the rewrite gem allows you to rewrite specific blocks of code and to treat rewriters as first-class entities for meta-meta-programming, `RewriteRails` simply rewrites entire files with a known set of rewriters.
@@ -93,7 +97,7 @@ No, RewriteRails rewrites your `.rr` files on the fly. However, you may wish to 
 Adding a new smartest guy in the room might fuxxor your project for other reasons, but your code is safe with RewriteRails. Run:
 
     rake rewrite:all rewritten=.
-  
+
 This does the `prepare` task that rewrites all of your code, but instead of placing the resulting `.rb` files in a hierarchy in the `rewritten` folder, it places them in your project right next to the `.rr` files. You can now remove the RewriteRails plugin and your project will work just as if you had never used it. (Removing the out-dated `.rr` files from the command line shouldn't be a problem for anyone who values removing technical debt enough to stop all new development.)
 
 The summary is that you can experiment with `RewriteRails` as much as you like, but you are not painting yourself into a corner. You can escape to standard Ruby at any time. In fact, RewriteRail is all about Standard Ruby. The whole point of the plugin is to always maintain your code using Standard Ruby, it's just that RewriteRails lets you use powerful idioms to write standard ruby code.
