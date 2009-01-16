@@ -51,6 +51,12 @@ After you write a `.rr` file, you can run your code in the normal way: `script/c
 
 As mentioned, RewriteRails will place a `.rb` in the `rewritten` directory for each of your `.rr` files and you can open them up in a text editor. Like any generated file, you should not edit the rewritten files.
 
+**How do I debug `.rr` files?**
+
+Very carefully. At this time, the rewritten file doe snot contain any blank lines or comments, and obviously some of what you wrote is rewritten into a different form. As a result, the code you write may be on line 42 in your `.rr` file but end up on line 23 in the resulting `.rb` file. This can be tedious if you are dealing with a lot of errors and like your IDE's ability to jump right to the offending line of source code.
+
+TODO: Perfom a little diff magic and modify each `.rb` file so that as many lines of code as possible end up on the same line number as in the original `.rr` file.
+
 **My colleagues don't mind me writing .rr files, but they prefer .rb files. What do we do?**
 
 RewriteRails its generated `.rb` files in its own `rewritten` directory, and ignores `.rb` files in Rails' standard directories. So if your team prefers to have some `.rb` files and some `.rr` files, you know that the `.rb` files in Rails' standard directories are all ok to edit as you see fit.
