@@ -92,3 +92,24 @@ When should we use all these tricks?
 1.	Embrace point-free style for methods that look like operators.
 1.	Embrace `->` notation for extremely simple cases where I want to give the parameters a descriptive name.
 1.	Use ordinary Ruby blocks for everything else.
+
+How does *String to Block* differ from `String#to_proc`?
+---
+
+First, RewriteRuby preprocesses your Ruby code before the file is read. Therefore, you only pay the cost of converting a String to a Block once, not every time the code is evaluated. This is a very big performance optimization. Second, *String to Block* only works with literal strings. It isn't possible to construct a string at run time and then convert it to a block with `&`.
+
+Third (and this is a subtle point), `String#to_proc` worked by using `eval` in the global environment, therefore the procs it produced were not closures in the ordinary sense of the word. For example, with `String#to_proc`:
+
+    require 'string_to_proc'
+    
+    increase = 1
+    (1..10).map(&'+ increase')
+      # => NameError: undefined local variable or method ‘increase’ for "+ increase":String
+
+`increase` is not defined in the global environment, so thing do not work as you might expect. However, let's try that some code again using *String to Block*:
+
+    increase = 1
+    (1..10).map(&'+ increase')
+      # => [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+This works because RewriteRails doesn't construct a string and ask Ruby to `eval` it globally at run time, it converts the code in the file and let's Ruby's interpreter determine how to treat `increase`.
