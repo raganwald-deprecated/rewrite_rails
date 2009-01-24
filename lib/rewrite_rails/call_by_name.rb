@@ -1,5 +1,1 @@
-module RewriteRails::CallByName
-  
-  CONVERTED = []
-  
-end
+module RewriteRails::CallByName; end

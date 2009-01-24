@@ -7,6 +7,7 @@ require 'parse_tree_extensions'
 class RewriteRails::CallByNameProcessor
 
   def initialize
+    RewriteRails::CallByName.const_set(:CONVERTED, []) unless RewriteRails::CallByName.const_defined?(:CONVERTED)
     convert_outstanding_call_by_name_methods
     @call_by_thunk = RewriteRails::CallByThunk.new(
       *RewriteRails::CallByName::CONVERTED.map(&:to_sym)
@@ -21,9 +22,6 @@ class RewriteRails::CallByNameProcessor
   
   def convert_outstanding_call_by_name_methods
     methods_to_convert = RewriteRails::CallByName.instance_methods - RewriteRails::CallByName::CONVERTED
-    o = returning(Object.new) do |o|
-      o.extend(RewriteRails::CallByName)
-    end
     methods_to_convert.each do |method_name|
       unbound_method = RewriteRails::CallByName.instance_method(method_name)
       sexp = eval(unbound_method.to_ruby).to_sexp
