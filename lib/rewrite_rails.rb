@@ -101,4 +101,17 @@ module RewriteRails
     File.expand_path(File.join(cache_folder_path(), partial_path))
   end
   
+  #s(:iter, s(:call, nil, :proc, s(:arglist)), s(:lasgn, :foo), s(:lit, :foo))
+  def self.arguments(sexp)
+    raise ArgumentError unless sexp[0] == :iter
+    arguments = sexp[2]
+    variable_symbols = if arguments[0] == :dasgn || arguments[0] == :dasgn_curr || arguments[0] == :lasgn
+      [arguments[1]]
+    elsif arguments[0] == :masgn
+      arguments[1][1..-1].map { |pair| pair[1] }
+    else
+      raise "don't know how to extract paramater names from #{arguments}"
+    end
+  end
+  
 end

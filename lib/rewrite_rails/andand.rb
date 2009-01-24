@@ -30,7 +30,7 @@ module RewriteRails
 s(:iter,
  s(:call, s(:lvar, :foo), :inject),
  s(:masgn, s(:array, s(:dasgn_curr, :a), s(:dasgn_curr, :b)), nil, nil),
- s(:call, s(:dvar, :a), :+, s(:array, s(:dvar, :b))))
+ s(:call, s(:lvar, :a), :+, s(:array, s(:lvar, :b))))
 =end
     def process_iter(exp)
       exp.shift

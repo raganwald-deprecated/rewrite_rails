@@ -9,7 +9,11 @@ module RewriteRails
   module Rewrite
   
     def self.from_sexp(sexp)
-      [Andand, StringToBlock, Into].inject(sexp) do |acc, rewrite_class|
+      [
+        Andand, 
+        StringToBlock, 
+        Into
+      ].inject(sexp) do |acc, rewrite_class|
         eval(rewrite_class.new.process(acc).to_s)
       end
     end
@@ -40,7 +44,7 @@ module RewriteRails
   )
 =end
     def self.sexp_for &proc
-      sexp = proc.to_sexp 
+      sexp = proc.to_sexp
       raise ArgumentError if sexp.length != 4
       raise ArgumentError if sexp[0] != :iter
       raise ArgumentError unless sexp[2].nil?
