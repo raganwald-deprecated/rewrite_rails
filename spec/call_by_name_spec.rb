@@ -25,7 +25,7 @@ describe RewriteRails::CallByNameProcessor do
     
     it "should convert the method to use thunks" do
       @it = RewriteRails::CallByNameProcessor.new
-      ws(RewriteRails::CallByName.instance_method(:foo).to_ruby).should == ws(proc { |bar| bar.call }.to_ruby)
+      ws(RewriteRails::CallByName.method(:foo).unbind.to_ruby).should == ws(proc { |bar| bar.call }.to_ruby)
     end
     
     it "should convert a method call to supply one thunk" do
