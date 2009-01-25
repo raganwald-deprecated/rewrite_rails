@@ -14,6 +14,12 @@ module RewriteRails
   #     => foo { |a,b| a.call + b.call }
   #
   class RewriteParametersAsThunkCalls
+    
+    attr_reader :number_of_direct_parameters
+    
+    def initialize(number_of_direct_parameters)
+      @number_of_direct_parameters = number_of_direct_parameters
+    end
   
     def sexp(exp)
       if exp.kind_of? Array
@@ -25,7 +31,7 @@ module RewriteRails
   
     #s(:iter, s(:call, nil, :proc, s(:arglist)), s(:lasgn, :foo), s(:lit, :foo))
     def process(sexp)
-      variable_symbols = RewriteRails.arguments(sexp)
+      variable_symbols = RewriteRails.arguments(sexp)[0..(number_of_direct_parameters - 1)]
       returning(eval(sexp.inspect)) do |new_sexp|
         new_sexp[3] = variable_symbols.inject(sexp[3]) { |result, variable|
           VariableRewriter.new(variable, s(:call, s(:lvar, variable), :call, s(:arglist))).process(eval(result.inspect))

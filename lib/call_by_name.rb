@@ -1,5 +1,0 @@
-module CallByName
-  
-  CONVERTED = []
-  
-end

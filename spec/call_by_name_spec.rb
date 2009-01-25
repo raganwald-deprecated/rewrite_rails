@@ -8,7 +8,35 @@ def if_then_by_value(test, consequent)
   test && consequent
 end
 
+def eval_processed &block
+  eval(Ruby2Ruby.new.process(
+    RewriteRails::CallByNameProcessor.new.process(RewriteRails.clean(&block))
+  ))
+end
+
 describe RewriteRails::CallByNameProcessor do
+  
+  describe "when a method returning nil is defined" do
+    
+    before(:each) do
+      RewriteRails::CallByName.class_eval do
+        def returning_nil(bar)
+          bar.do_something()
+          return nil
+        end
+      end
+      @it = RewriteRails::CallByNameProcessor.new
+    end
+    
+    it "should convert the method including the return of nil" do
+      ws(RewriteRails::CallByName.method(:returning_nil).unbind.to_ruby).should == 
+        ws(proc do |bar|
+          bar.call.do_something()
+          return nil
+        end.to_ruby)
+    end
+    
+  end
   
   describe "when a simple method is defined" do
     
@@ -21,10 +49,10 @@ describe RewriteRails::CallByNameProcessor do
           bash + blitz
         end
       end
+      @it = RewriteRails::CallByNameProcessor.new
     end
     
     it "should convert the method to use thunks" do
-      @it = RewriteRails::CallByNameProcessor.new
       ws(RewriteRails::CallByName.method(:foo).unbind.to_ruby).should == ws(proc { |bar| bar.call }.to_ruby)
     end
     
@@ -82,6 +110,47 @@ describe RewriteRails::CallByNameProcessor do
         $foo =  nil
         if_then_by_value(false, $foo = :foo)
         $foo.should_not be_nil
+      end
+      
+    end
+    
+  end
+  
+  describe "return keyword" do
+    
+    describe "hand rolled" do
+      
+      before(:each) do
+        RewriteRails::CallByName.class_eval do
+          def self.hand_returner(foo)
+            1.times do
+              return foo.call
+            end
+          end
+        end     
+      end
+      
+      it "should return from inside a block" do
+        RewriteRails::CallByName.hand_returner(proc { :foo }).should == :foo
+      end
+      
+    end
+    
+    describe "processed" do
+      
+      before(:each) do
+        RewriteRails::CallByName.class_eval do
+          def returner(foo)
+            1.times do
+              return foo
+            end
+          end
+        end
+        @it = RewriteRails::CallByNameProcessor.new  
+      end
+      
+      it "should return from inside a block" do
+        eval_processed { returner(:foo) }.should == :foo
       end
       
     end
