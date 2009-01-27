@@ -9,17 +9,6 @@ module RewriteRails
   
   class StringToBlock < SexpProcessor
     
-=begin
-  RewriteRails::Rewrite.sexp_for { foo.bar(&'bash') }.to_a  => 
-    [:call, 
-      [:call, nil, :foo, [:arglist]], 
-      :bar, 
-      [:arglist, 
-        # ...,
-        [:block_pass, [:str, "bash"]]
-      ]
-    ]
-=end
     # def process_iter(exp)
     #   begin
     #     s(

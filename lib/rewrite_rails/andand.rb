@@ -61,7 +61,7 @@ s(:iter,
           lhs_and = receiver_expr.dup
           new_receiver = receiver_expr.dup
         else
-          mono_parameter = Rewrite.gensym()
+          mono_parameter = ::RewriteRails.gensym()
           lhs_and = s(:lasgn, mono_parameter, receiver_expr)
           new_receiver = s(:lvar, mono_parameter)
         end
@@ -138,7 +138,7 @@ s(:iter,
           lhs_and = receiver_expr
           new_receiver = receiver_expr
         else
-          mono_parameter = Rewrite.gensym()
+          mono_parameter = ::RewriteRails.gensym()
           lhs_and = s(:lasgn, mono_parameter, receiver_expr)
           new_receiver = s(:lvar, mono_parameter)
         end

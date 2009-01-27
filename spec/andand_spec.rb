@@ -4,7 +4,7 @@ describe RewriteRails::Andand do
   
   before(:each) do
     
-    RewriteRails::Rewrite.define_gensym do
+    RewriteRails.define_gensym do
       :__TEMP__
     end
     

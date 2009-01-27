@@ -6,6 +6,7 @@ require 'sexp_processor'
 require 'unified_ruby'
 require 'ruby2ruby'
 require 'ftools'
+require 'parse_tree_extensions'
 
 class Unifier
   include UnifiedRuby
@@ -74,14 +75,14 @@ module RewriteRails
   end
   
   def self.clean(sexp = nil, &block)
-    sexp ||= Rewrite.sexp_for(&block)
+    sexp ||= sexp_for(&block)
     sexp = Sexp.from_array(sexp)
     str = sexp.to_s
     UNIFIER.process(sexp) rescue eval(str)
   end
   
   def self.rewrite_sexp(sexp)
-    sexp = Rewrite.from_sexp(clean(sexp))
+    sexp = from_sexp(clean(sexp))
   end
   
   def self.to_ruby(sexp = nil, &block)
@@ -112,6 +113,69 @@ module RewriteRails
     else
       raise "don't know how to extract paramater names from #{arguments}"
     end
+  end
+    
+  class << self
+    
+    def default_generator
+      lambda { :"__#{Time.now.to_i}#{rand(100000)}__" }
+    end
+    
+    def gensym
+      (@generator ||= default_generator).call()
+    end
+      
+    def define_gensym(&block)
+      @generator = block
+    end
+      
+  end
+  
+  def self.from_sexp(sexp)
+    [
+      Andand, 
+      StringToBlock, 
+      Into
+    ].inject(sexp) do |acc, rewrite_class|
+      eval(rewrite_class.new.process(acc).to_s)
+    end
+  end
+
+  # Convert an expression to a sexp by taking a block and stripping
+  # the outer proc from it.
+=begin
+s(:iter,
+  s(:call, nil, :proc, s(:arglist)),
+  nil, 
+  s(:call, s(:call, nil, :foo, s(:arglist)), :bar, s(:arglist))
+)
+=end
+  def self.sexp_for &proc
+    sexp = proc.to_sexp
+    raise ArgumentError if sexp.length != 4
+    raise ArgumentError if sexp[0] != :iter
+    raise ArgumentError unless sexp[2].nil?
+    sexp[3]
+  end
+
+  # Convert an expression to a sexp and then the sexp to an array.
+  # Useful for tests where you want to compare results.
+  def self.arr_for &proc
+    sexp_for(&proc).to_a
+  end
+
+  # Convert an object of some type to a sexp, very useful when you have a sexp
+  # expressed as a tree of arrays.
+  def self.recursive_s(node)
+    if node.is_a? Array
+      s(*(node.map { |subnode| recursive_s(subnode) }))
+    else
+      node
+    end
+  end
+  
+  def self.dup_s(sexp)
+    recursive_s(sexp.to_a)
   end
   
 end
