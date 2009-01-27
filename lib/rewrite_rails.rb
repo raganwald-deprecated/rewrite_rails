@@ -13,6 +13,8 @@ class Unifier
 end
 
 module RewriteRails
+  
+  NEWLINE_NODES = true
 
   def self.cache_folder_name=(name)
     @cache_folder_name = name
@@ -57,7 +59,7 @@ module RewriteRails
     
   end  
 
-  PARSER = ParseTree.new(false) # no newline nodes
+  PARSER = ParseTree.new(NEWLINE_NODES)
   UNIFIER = Unifier.new
     
   def self.rewrite_file(rr_path)
