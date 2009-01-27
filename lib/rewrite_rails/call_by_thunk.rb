@@ -7,6 +7,7 @@ require 'sexp_processor'
 module RewriteRails
     
   # Initialize with a list of names, e.g.
+  #
   #   CallByThunk.new(:foo, :bar)
   #
   # It then converts expressions of the form:
@@ -15,22 +16,23 @@ module RewriteRails
   #
   # into:
   #
-  #    foo.call( lambda { expr1 }, lambda { expr2 }, ..., lambda { exprn })
+  #    ::RewriteRails::CallByName.foo( lambda { expr1 }, lambda { expr2 }, ..., lambda { exprn })
   #
   # This is handy when combined with RewriteVariablesAsThunkCalls in the following
-  # manner: if you rewrite function invocations with CallByThunk and also rewrite the
-  # function's body to convert variable references into thunk calls, you now have a
-  # function with call-by-name semantics
+  # manner: if you rewrite method invocations with CallByThunk and also rewrite the
+  # method's body to convert variable references into thunk calls, you now have a
+  # method with call-by-name semantics
   #
   
   class CallByThunk < SexpProcessor
     
-    def initialize(name_to_method_hash)
+    def initialize(name_to_method_hash, name_to_direct_arity)
       @name_to_method_hash = name_to_method_hash # we could look this up in CallByName, but we leave it open for future changes
       @name_to_arity = name_to_method_hash.inject({}) do |hash, pair|
         name, method = *pair
         hash.merge(name => method.arity)
       end
+      @name_to_direct_arity = name_to_direct_arity
       super()
     end
     
@@ -50,16 +52,8 @@ module RewriteRails
           raise "Do not understand arguments #{arguments}" unless arguments[0] == :arglist
           arguments.shift
           # arguments is now a list of parameters
-          if arity > 0
-            direct_arity = arity
-            splatted = false
-          elsif arity == -1
-            direct_arity = 0
-            splatted = true
-          elsif arity < -1
-            direct_arity = -arity - 1
-            splatted = true
-          end
+          direct_arity = @name_to_direct_arity[name]
+          splatted = arity > direct_arity
           thunked_arguments = s(:arglist)
           direct_arity.times do
             thunked_arguments <<  s(:iter, 

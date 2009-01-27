@@ -157,4 +157,107 @@ describe RewriteRails::CallByNameProcessor do
     
   end
   
+  
+  describe "splatted methods" do
+  
+    describe "hand-rolled splatted" do
+    
+      before(:each) do
+        RewriteRails::CallByName.class_eval do
+          def self.try_these(expressions)
+            (0..(expressions.length - 1)).each do |i|
+              (return expressions[i]) rescue nil
+            end
+            return nil
+          end
+        end
+      end
+    
+      it "should return nil" do
+        RewriteRails::CallByName.try_these(
+          RewriteRails::CallByName::P.new(
+            proc { raise 'foo' },
+            proc { raise 'bar' }
+          )
+        ).should be_nil
+      end
+    
+      it "should return blitz" do
+        RewriteRails::CallByName.try_these(
+          RewriteRails::CallByName::P.new(
+            proc { raise 'foo' },
+            proc { raise 'bar' },
+            proc { :blitz }
+          )
+        ).should == :blitz
+      end
+
+    end
+    
+    describe "pure splatted" do
+      
+      before(:each) do
+        RewriteRails::CallByName.class_eval do
+          def try_these(*expressions)
+            value = token = Object.new
+            i = 0
+            while i < expressions.length && value == token do
+              value = expressions[i] rescue token
+              i += 1
+            end
+            value == token ? nil : value
+          end
+        end
+        @it = RewriteRails::CallByNameProcessor.new
+      end
+      
+      it "should handle try these" do
+        
+        RewriteRails::CallByName.try_these(
+          RewriteRails::CallByName::P.new(
+            proc { raise 'foo' },
+            proc { raise 'bar' },
+            proc { :blitz }
+          )
+        ).should == :blitz
+      end
+      
+      it "should allow try these to fall through" do
+        RewriteRails::CallByName.try_these(
+          RewriteRails::CallByName::P.new(
+            proc { raise 'foo' },
+            proc { raise 'bar' },
+            proc { raise 'blitz' }
+          )
+        ).should be_nil
+      end
+      
+    end
+    
+    describe "mixed splatted" do
+      
+      before(:each) do
+        RewriteRails::CallByName.class_eval do
+          def mixed1(foo, *bar)
+            foo
+          end
+          def mixed2(foo, *bar)
+            bar.first
+          end
+        end
+        @it = RewriteRails::CallByNameProcessor.new
+      end
+      
+      it "should handle an unsplatted first parameter" do
+        eval_processed { mixed1(:foo, :bar, :blitz) }.should == :foo
+      end
+      
+      it "should handle a simple splatted last parameter" do
+        eval_processed { mixed2(:foo, :bar, :blitz) }.should == :bar
+      end
+      
+    end
+    
+  end
+  
 end

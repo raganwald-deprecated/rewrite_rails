@@ -25,6 +25,14 @@ class RewriteRails::CallByName::P
     end
   end
   
+  def first
+    @lambdas.first.call
+  end
+  
+  def last
+    @lambdas.last.call
+  end
+  
   def_delegators :@lambdas, :length, :size
 
 end
