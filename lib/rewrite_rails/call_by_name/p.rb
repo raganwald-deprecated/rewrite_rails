@@ -7,7 +7,7 @@ class RewriteRails::CallByName::P
   def initialize(*lambdas)
     @lambdas = *lambdas
   end
-
+  
   def each
     @lambdas.each do |l|
       yield l.call

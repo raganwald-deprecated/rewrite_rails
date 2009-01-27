@@ -43,7 +43,7 @@ The good news is that while your colleague's rewriting destroys what you origina
 
 **How do I know what will be rewritten?**
 
-Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/doc). Every rewriter gets its own page. At the moment, those are [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile"), [Into](http://github.com/raganwald/rewrite_rails/tree/master/doc/into.md) and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md "doc/string_to_block.md"). More will be added as I write them or port them from the old rewrite gem.
+Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/doc). Every rewriter gets its own page. At the moment, those are [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile"), [Into](http://github.com/raganwald/rewrite_rails/tree/master/doc/into.md), [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md "doc/string_to_block.md"), and [Call by Name](http://github.com/raganwald/rewrite_rails/tree/master/doc/call_by_name.md). More will be added as I write them or port them from the old rewrite gem.
 
 **How can I see what is rewritten?**
 

@@ -83,7 +83,7 @@ describe PROCESSOR_CLASS do
       before(:each) do
         RewriteRails::CallByName.class_eval do
           def if_then(test, consequent)
-            test && consequent
+            test and consequent
           end
         end
       end

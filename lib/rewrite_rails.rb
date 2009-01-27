@@ -14,7 +14,7 @@ end
 
 module RewriteRails
   
-  NEWLINE_NODES = true
+  NEWLINE_NODES = false
   
   class PersistingCallByNameProcessor < CallByName::ClassProcessor
     
@@ -23,6 +23,14 @@ module RewriteRails
       super
       if was_methods != self.methods_converted_on_creation
         RewriteRails.write_module(RewriteRails::CallByName)
+        
+        p_rb = File.read(File.join(File.dirname(__FILE__), 'rewrite_rails', 'call_by_name', 'p.rb'))
+        p_path = File.join(RewriteRails.cache_folder_path, 'lib', 'rewrite_rails', 'call_by_name', 'p.rb')
+        File.makedirs(File.dirname(p_path))
+        File.open(p_path, 'w') do |f|
+          f.write(p_rb)
+        end
+        
       end
     end
     
@@ -99,6 +107,7 @@ module RewriteRails
     end
   end
     
+  # Very fragile!
   def self.write_module(module_to_write, destination = File.join(cache_folder_path, 'lib'))
     rb_path = File.join(destination, File.join(module_to_write.name.split('::').map { |f| f.underscore }) + '.rb')
     File.makedirs(File.dirname(rb_path))
