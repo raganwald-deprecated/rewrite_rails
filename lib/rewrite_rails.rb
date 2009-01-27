@@ -15,6 +15,29 @@ end
 module RewriteRails
   
   NEWLINE_NODES = true
+  
+  class PersistingCallByNameProcessor < CallByName::ClassProcessor
+    
+    def initialize
+      was_methods = self.methods_converted_on_creation
+      super
+      if was_methods != self.methods_converted_on_creation
+        RewriteRails.write_module(RewriteRails::CallByName)
+      end
+    end
+    
+  end
+  
+  def self.from_sexp(sexp)
+    [
+      Andand, 
+      StringToBlock, 
+      Into,
+      PersistingCallByNameProcessor
+    ].inject(sexp) do |acc, rewrite_class|
+      eval(rewrite_class.new.process(acc).to_s)
+    end
+  end
 
   def self.cache_folder_name=(name)
     @cache_folder_name = name
@@ -75,6 +98,15 @@ module RewriteRails
       f.write(rb)
     end
   end
+    
+  def self.write_module(module_to_write, destination = File.join(cache_folder_path, 'lib'))
+    rb_path = File.join(destination, File.join(module_to_write.name.split('::').map { |f| f.underscore }) + '.rb')
+    File.makedirs(File.dirname(rb_path))
+    rb = Ruby2Ruby.translate(module_to_write)
+    File.open(rb_path, 'w') do |f|
+      f.write(rb)
+    end
+  end
   
   def self.clean(sexp = nil, &block)
     sexp ||= sexp_for(&block)
@@ -131,16 +163,6 @@ module RewriteRails
       @generator = block
     end
       
-  end
-  
-  def self.from_sexp(sexp)
-    [
-      Andand, 
-      StringToBlock, 
-      Into
-    ].inject(sexp) do |acc, rewrite_class|
-      eval(rewrite_class.new.process(acc).to_s)
-    end
   end
 
   # Convert an expression to a sexp by taking a block and stripping

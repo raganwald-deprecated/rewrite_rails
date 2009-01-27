@@ -1,5 +1,9 @@
 require File.expand_path(File.join(File.dirname(__FILE__), 'spec_helper.rb'))
 
+RewriteRails
+
+PROCESSOR_CLASS = RewriteRails::CallByName::ClassProcessor
+
 def ws(str)
   str.gsub(/\s+/, ' ')
 end
@@ -10,11 +14,11 @@ end
 
 def eval_processed &block
   eval(Ruby2Ruby.new.process(
-    RewriteRails::CallByNameProcessor.new.process(RewriteRails.clean(&block))
+    PROCESSOR_CLASS.new.process(RewriteRails.clean(&block))
   ))
 end
 
-describe RewriteRails::CallByNameProcessor do
+describe PROCESSOR_CLASS do
   
   describe "when a method returning nil is defined" do
     
@@ -25,7 +29,7 @@ describe RewriteRails::CallByNameProcessor do
           return nil
         end
       end
-      @it = RewriteRails::CallByNameProcessor.new
+      @it = PROCESSOR_CLASS.new
     end
     
     it "should convert the method including the return of nil" do
@@ -49,7 +53,7 @@ describe RewriteRails::CallByNameProcessor do
           bash + blitz
         end
       end
-      @it = RewriteRails::CallByNameProcessor.new
+      @it = PROCESSOR_CLASS.new
     end
     
     it "should convert the method to use thunks" do
@@ -57,7 +61,7 @@ describe RewriteRails::CallByNameProcessor do
     end
     
     it "should convert a method call to supply one thunk" do
-      @it = RewriteRails::CallByNameProcessor.new
+      @it = PROCESSOR_CLASS.new
       ws(Ruby2Ruby.new.process(
         @it.process(
           RewriteRails.clean { foo(1 + 1) }
@@ -66,7 +70,7 @@ describe RewriteRails::CallByNameProcessor do
     end
     
     it "should convert a method call to supply multiple thunks" do
-      @it = RewriteRails::CallByNameProcessor.new
+      @it = PROCESSOR_CLASS.new
       ws(Ruby2Ruby.new.process(
         @it.process(
           RewriteRails.clean { bar(1 + 1, 1 - 1) }
@@ -85,7 +89,7 @@ describe RewriteRails::CallByNameProcessor do
       end
       
       it "should not have side-effects in a false case" do
-        @it = RewriteRails::CallByNameProcessor.new
+        @it = PROCESSOR_CLASS.new
         $foo = nil
         eval(Ruby2Ruby.new.process(
           @it.process(
@@ -96,7 +100,7 @@ describe RewriteRails::CallByNameProcessor do
       end
       
       it "should have side-effects in a true case" do
-        @it = RewriteRails::CallByNameProcessor.new
+        @it = PROCESSOR_CLASS.new
         $foo = nil
         eval(Ruby2Ruby.new.process(
           @it.process(
@@ -146,7 +150,7 @@ describe RewriteRails::CallByNameProcessor do
             end
           end
         end
-        @it = RewriteRails::CallByNameProcessor.new  
+        @it = PROCESSOR_CLASS.new  
       end
       
       it "should return from inside a block" do
@@ -208,7 +212,7 @@ describe RewriteRails::CallByNameProcessor do
             value == token ? nil : value
           end
         end
-        @it = RewriteRails::CallByNameProcessor.new
+        @it = PROCESSOR_CLASS.new
       end
       
       it "should handle try these" do
@@ -245,7 +249,7 @@ describe RewriteRails::CallByNameProcessor do
             bar.first
           end
         end
-        @it = RewriteRails::CallByNameProcessor.new
+        @it = PROCESSOR_CLASS.new
       end
       
       it "should handle an unsplatted first parameter" do
