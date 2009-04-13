@@ -3,7 +3,7 @@ String to Block
 
 *String to Block* is a port of the String Lambdas from Oliver Steele's [Functional Javascript](http://osteele.com/sources/javascript/functional/ "Functional Javascript") library. I have modified the syntax to hew closer to Ruby's idioms.
 
-*String to Block* is based on [String#to\_proc](http://github.com/raganwald/homoiconic/tree/master/2008-11-28/you_cant_be_serious.md "You can't be serious!?"). The difference is that *String to Block* accomplishes its magic by opening up `String` and adding a `to_proc` method, then calling that method twice every time you write something like:
+*String to Block* is based on [String#to\_proc](http://github.com/raganwald/homoiconic/tree/master/2008-11-28/you_cant_be_serious.md "You can't be serious!?"). The difference is that *String to Proc* accomplishes its magic by opening up `String` and adding a `to_proc` method, then calling that method twice every time you write something like:
 
     (1..100).map(&'1..n').inject(&'+')
 

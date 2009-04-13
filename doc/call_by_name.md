@@ -129,4 +129,8 @@ It is rewritten as:
       
     end
 
-For methods with a splatted parameter, RewriteRails makes use of a helper class, `RewriteRails::CallByName::P`. As you expect, it is written out in the rewritten folder as well. 
+For methods with a splatted parameter, RewriteRails makes use of a helper class, `RewriteRails::CallByName::P`. As you expect, it is written out in the rewritten folder as well.
+
+Github user [andhapp](http://github.com/andhapp) asked a question: *I was going through the CallByName documentation provided and noticed something unusual. Under "A Peek Behind The Curtain", there is a code snippet evaluating a class (class\_eval). The following code snippet shows the regenerated .rb file but now the same methods are shown as class methods. Isn't class\_eval meant to produce instance methods as opposed to class methods? In the next few code snippets, the methods are indeed used as class methods. May be I am missing an important point. I thought this might be a glitch in the documentation or may be I am not thinking straight. Either way, I would be extremely delighted if you could please enlighten me.* 
+
+My answer: *You use them as if they were instance methods defined in Kernel, so I designed it so that you would write them as instance methods. RewriteRails happens to rewrite them as class methods and then rewrite your code to call them as such, but that it an "implementation detail," as it were. To your .rr code they look like instance methods.*
