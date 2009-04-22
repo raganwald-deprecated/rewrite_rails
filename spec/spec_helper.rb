@@ -1,5 +1,5 @@
 ENV["RAILS_ENV"] = "test"
-require File.expand_path(File.join(File.dirname(__FILE__), '..', '..', '..', '..', 'config', "environment"))
+require File.expand_path(File.join(RAILS_ROOT, 'config', "environment"))
 require 'spec' # despite the name, you need sudo gem install rspec
 require 'spec/rails' # and here, sudo gem install rspec-rails
 Dir["#{File.dirname(__FILE__)}/helpers/*_helper.rb"].each do |helper|

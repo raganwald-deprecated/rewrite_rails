@@ -1,7 +1,7 @@
 The RewriteRails Plug-In
 ========================
 
-The [RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master) plug-in adds syntactic abstractions like [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "") and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md "") to Rails projects [without monkey-patching](http://avdi.org/devblog/2008/02/23/why-monkeypatching-is-destroying-ruby/ "Monkeypatching is Destroying Ruby"). All of the power and convenience, none of the compatibility woes and head-aches.
+The [RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master) plug-in adds syntactic abstractions like [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "") and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md#readme "") to Rails projects [without monkey-patching](http://avdi.org/devblog/2008/02/23/why-monkeypatching-is-destroying-ruby/ "Monkeypatching is Destroying Ruby"). All of the power and convenience, none of the compatibility woes and head-aches.
 
 Should You Care?
 ---
@@ -43,7 +43,7 @@ The good news is that while your colleague's rewriting destroys what you origina
 
 **How do I know what will be rewritten?**
 
-Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/doc). Every rewriter gets its own page. At the moment, those are [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile"), [Into](http://github.com/raganwald/rewrite_rails/tree/master/doc/into.md), [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md "doc/string_to_block.md"), and [Call by Name](http://github.com/raganwald/rewrite_rails/tree/master/doc/call_by_name.md). More will be added as I write them or port them from the old rewrite gem.
+Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/doc). Every rewriter gets its own page. At the moment, those are [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile"), [Into](http://github.com/raganwald/rewrite_rails/tree/master/doc/into.md#readme), [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md#readme "doc/string_to_block.md"), [Call by Name](http://github.com/raganwald/rewrite_rails/tree/master/doc/call_by_name.md#readme "doc/call_by_name.md"), and (new for 2009) [Extension Methods](http://github.com/raganwald/rewrite_rails/tree/master/doc/extension_methods.md#readme "doc/extension_methods.md"). More will be added as I write them or port them from the old rewrite gem.
 
 **How can I see what is rewritten?**
 
@@ -118,4 +118,4 @@ Installation and Dependencies
 Legal
 -----
 
-Copyright (c) 2008 Reginald Braithwaite, released under the [MIT license](http:MIT-LICENSE).
+Copyright (c) 2008-2009 Reginald Braithwaite, released under the [MIT license](http:MIT-LICENSE).
