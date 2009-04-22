@@ -3,7 +3,7 @@ Extension Methods
 
 > An **extension method** is a new language feature of C# starting with the 3.0 specification, as well as Visual Basic.NET starting with 9.0 and Oxygene with 2.0. Extension methods enable you to "add" methods to existing types without creating a new derived type, recompiling, or otherwise modifying the original type. Extension methods are a special kind of static method, but they are called as if they were instance methods on the extended type. For client code written in C# and Visual Basic, there is no apparent difference between calling an extension method and the methods that are actually defined in a type.
 
-RewriteRails supports creation of things that look like instance methods, but are actually class methods of a new, helper class. First you add a new class or module to the `RewriteRails::ExtensionMethods` module that mimics the class or module of the objects that will handle the method:
+[RewriteRails](http://github.com/raganwald/rewrite_rails "raganwald's rewrite_rails at master - GitHub") supports creation of things that look like instance methods, but are actually class methods of a new, helper class. First you add a new class or module to the `RewriteRails::ExtensionMethods` module that mimics the class or module of the objects that will handle the method:
 
     module RewriteRails
       module ExtensionMethods
@@ -64,7 +64,7 @@ Your version and their version give different results for an array of arrays:
       
 Had you written your version by opening up the Enumerable module and adding #sum, you might have overwritten their version, breaking their code that expects it to work their way. On the other hand, what if Rails loaded their version after yours? Then their code would work but your code would be mysteriously broken.
 
-There are two problem with this 'safe' approach. The first is that it is tedious to write RewriteRails::ExtensionMethods::Enumerable.sum in place of plain "sum." The second is that our code is more readable when we use infix notation (like instance method calls) instead of prefix notation (like class method calls). So what we want is to write:
+There are two problem with this 'safe' approach. The first is that it is tedious to write RewriteRails::ExtensionMethods::Enumerable.sum in place of plain "sum." The second is that [sometimes our code will be more readable when we use infix notation](http://weblog.raganwald.com/2008/01/no-detail-too-small.html "No Detail Too Small") (like instance method calls) instead of prefix notation (like class method calls). So what we want is to write:
 
     [[1,2], [3,4], [5,6]].sum
       => 21

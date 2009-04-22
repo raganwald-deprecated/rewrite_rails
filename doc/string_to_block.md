@@ -96,7 +96,7 @@ When should we use all these tricks?
 How does *String to Block* differ from `String#to_proc`?
 ---
 
-First, RewriteRuby preprocesses your Ruby code before the file is read. Therefore, you only pay the cost of converting a String to a Block once, not every time the code is evaluated. This is a very big performance optimization. Second, *String to Block* only works with literal strings. It isn't possible to construct a string at run time and then convert it to a block with `&`.
+First, [RewriteRails](http://github.com/raganwald/rewrite_rails "raganwald's rewrite_rails at master - GitHub") preprocesses your Ruby code before the file is read. Therefore, you only pay the cost of converting a String to a Block once, not every time the code is evaluated. This is a very big performance optimization. Second, *String to Block* only works with literal strings. It isn't possible to construct a string at run time and then convert it to a block with `&`.
 
 Third (and this is a subtle point), `String#to_proc` worked by using `eval` in the global environment, therefore the procs it produced were not closures in the ordinary sense of the word. For example, with `String#to_proc`:
 
