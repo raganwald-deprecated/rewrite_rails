@@ -61,12 +61,12 @@ The advantage of putting our own definition in a separate module is that if some
       
     end
 
-Your version and their version give different results for an array of arrays:
+Your version and their version give different results for an array of arrays. While your version computes the sum of [[1,2], [3,4], [5,6]] as 21, their version does something else entirely:
 
     [[1,2], [3,4], [5,6]].sum
       => [1, 2, 3, 4, 5, 6]
       
-Had you written your version by opening up the Enumerable module and adding #sum, you might have overwritten their version, breaking their code that expects it to work their way. On the other hand, what if Rails loaded their version after yours? Then their code would work but your code would be mysteriously broken.
+Having two versions of the same method that give different results is obviously a conflict. Had you written your version by opening up the Enumerable module and adding #sum, you might have overwritten their version, breaking their code that expects it to work their way. On the other hand, what if Rails loaded their version after yours? Then their code would work but your code would be mysteriously broken.
 
 There are two problem with this 'safe' approach. The first is that it is tedious to write RewriteRails::ExtensionMethods::Enumerable.sum in place of plain "sum." The second is that [sometimes our code will be more readable when we use infix notation](http://weblog.raganwald.com/2008/01/no-detail-too-small.html "No Detail Too Small") (like instance method calls) instead of prefix notation (like class method calls). So what we want is to write:
 
