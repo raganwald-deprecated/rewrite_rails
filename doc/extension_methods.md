@@ -1,9 +1,13 @@
 Extension Methods
 ===
 
-> An **extension method** is a new language feature of C# starting with the 3.0 specification, as well as Visual Basic.NET starting with 9.0 and Oxygene with 2.0. Extension methods enable you to "add" methods to existing types without creating a new derived type, recompiling, or otherwise modifying the original type. Extension methods are a special kind of static method, but they are called as if they were instance methods on the extended type. For client code written in C# and Visual Basic, there is no apparent difference between calling an extension method and the methods that are actually defined in a type.
+> An **extension method** is a new language feature of C# starting with the 3.0 specification, as well as Visual Basic.NET starting with 9.0 and Oxygene with 2.0. Extension methods enable you to "add" methods to existing types without creating a new derived type, recompiling, or otherwise modifying the original type. Extension methods are a special kind of static method, but they are called as if they were instance methods on the extended type. For client code written in C# and Visual Basic, there is no apparent difference between calling an extension method and the methods that are actually defined in a type. --[Wikipedia](http://en.wikipedia.org/wiki/Extension_method "Extension Methods")
 
-[RewriteRails](http://github.com/raganwald/rewrite_rails "raganwald's rewrite_rails at master - GitHub") supports creation of things that look like instance methods, but are actually class methods of a new, helper class. First you add a new class or module to the `RewriteRails::ExtensionMethods` module that mimics the class or module of the objects that will handle the method:
+With [RewriteRails](http://github.com/raganwald/rewrite_rails "raganwald's rewrite_rails at master - GitHub"), you can now write Extension Methods for your Ruby on Rails projects. Just like in C#, you can "add" methods to existing classes or module (like Enumerable) without modifying the original class or module. The benefit is that your changes *never* conflict with other code. The headaches of opening core classes simply go away.
+
+**How to Write an Extension Method**
+
+First, you add a new class or module to the `RewriteRails::ExtensionMethods` module that mimics the class or module of the objects that will handle the method:
 
     module RewriteRails
       module ExtensionMethods
