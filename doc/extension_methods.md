@@ -3,7 +3,7 @@ Extension Methods
 
 > An **extension method** is a new language feature of C# starting with the 3.0 specification, as well as Visual Basic.NET starting with 9.0 and Oxygene with 2.0. Extension methods enable you to "add" methods to existing types without creating a new derived type, recompiling, or otherwise modifying the original type. Extension methods are a special kind of static method, but they are called as if they were instance methods on the extended type. For client code written in C# and Visual Basic, there is no apparent difference between calling an extension method and the methods that are actually defined in a type. --[Wikipedia](http://en.wikipedia.org/wiki/Extension_method "Extension Methods")
 
-With [RewriteRails](http://github.com/raganwald/rewrite_rails "raganwald's rewrite_rails at master - GitHub"), you can now write Extension Methods for your Ruby on Rails projects. Just like in C#, you can "add" methods to existing classes or module (like Enumerable) without modifying the original class or module. The benefit is that your changes *never* [conflict with other code](http://github.com/raganwald/homoiconic/blob/master/2009-04-08/sick.md#readme "I'm Sick of this Shit"). The headaches of opening core classes simply go away.
+With [RewriteRails](http://github.com/raganwald/rewrite_rails "raganwald's rewrite_rails"), you can now write Extension Methods for your Ruby on Rails projects. Just like in C#, you can "add" methods to existing classes or module (like Enumerable) without modifying the original class or module. The benefit is that your changes *never* [conflict with other code](http://github.com/raganwald/homoiconic/blob/master/2009-04-08/sick.md#readme "I'm Sick of this Shit"). The headaches of opening core classes simply go away.
 
 **How to Write an Extension Method**
 
@@ -83,6 +83,14 @@ We want RewriteRails to rewrite our code as:
     
 Notice how the receiver of our fake instance method is transformed into the first parameter of our helper class method. And in fact, this is almost exactly what happens. So you get the readability of code that looks like it is defining an instance method on a core class or module, but you get the safety of actually using a new helper module that won't conflict with other people's mucking about.
 
+**Major Caveat**
+
+Rewrite has to know which extension methods you've defined *before it processes your .rr files*. In practice, this means you want to include an initializer file with contents similar to this:
+
+    RewriteRails::ExtensionMethods::Enumerable
+
+You want to force Rails to load each of your definitions before it processes your files, so you want one such lien for each class or module you have. Another way to do it is to put the entire body of the definition in an initializer, it's your choice.
+
 **The Fine Print**
 
 Here are a few considerations for those who want to "look under the hood." RewriteRails actually throws a little type discrimination into the rewritten code, so the actual rewritten code will look like this:
@@ -123,3 +131,46 @@ A third consideration is that this is just syntactic sugar. If we didn't have so
 These things look like instance methods, but please remember they are nothing more than syntactic sugar that are transformed at run time into calls to our helper methods. If you are doing any kind of meta-programming, they are not going to work for you. If you need to define methods on your classes that might be called with Object#send or queried, they are not going to work for you.
 
 Instead, use these to write simpler, easier to read code with fewer compatibility headaches. That's what they're for.
+
+**This may work for Larry, but what about Curly and Moe?**
+
+An [area man](http://blog.jcoglan.com/2009/04/02/april-fool-area-man-releases-worlds-slowest-scheme-interpreter/ "April fool: area man releases world&#8217;s slowest Scheme interpreter") asked:
+
+> What if we all used rewrite_rails? You can still get two definitions for RewriteRails::ExtensionMethods::Enumerable.sum
+
+Good catch! The long answer is that Rewrite Rails is specifically written to make it simple for Rails developers to insulate themselves from the vagaries of gem and plugin authors. So my first priority is protecting your code from ordinary Ruby metaprogramming conflicts.
+
+That being said, I do have it in my mind that one day you will be able to use this technology to write gems that are likewise insulated from every other gem. That wasn't an immediate goal, so I initially left out some stuff that would add complexity to the implementation.
+
+But since I was chided by a fellow kind enough to link to Rewrite Rails on his blog... *Steps have been taken*.
+
+**Scoped Extension Methods**
+
+In addition to `RewriteRails::ExtensionMethods`, you can place your extension methods somewhere in the parent hierarchy above the current class or module. Let me be specific. If you are writing `::Foo`, there is no parent and you must place all of your extension methods in `::RewriteRails::ExtensionMethods`. You can run into conflicts.
+
+If you are writing `::Admin::LoginController`, you can place your extension methods in either `::RewriteRails::ExtensionMethods` or `::Admin::ExtensionMethods`.
+
+If you *really love your lexical scope*, you might be writing `::Raganwald::TwitterTools::Admin::LoginController`. Now you can place your extension methods in `::RewriteRails::ExtensionMethods`, `::Raganwald::TwitterTools::Admin::ExtensionMethods`, `::Raganwald::TwitterTools::ExtensionMethods`, or `::Raganwald::ExtensionMethods` as you please.
+
+It's up to you to use modules and classes to create scopes where you can place your extension methods. Note that you **cannot** place your extension methods in the current scope. The following will *not* work:
+
+    class Foo
+      module ExtensionMethods
+        class Number
+          def self.ata(depth_in_feet)
+            depth_in_feet.to_f / 33.0 # FSW
+          end
+        end
+      end
+      
+      def bar
+        # ...
+        depth.ata
+        # ...
+      end
+      
+    end
+    
+This won't work because `Foo::ExtensionMethods` is defined in `Foo`. In the current implementation, the reason for this is that the module containing your various extension method definitions must be available to the rewriter *before* it rewrites a file. It might be possible to fidjit with things such that `Foo::ExtensionMethods` is processed in one file and the body of `Foo` in another, but the current implementation will ignore `Foo::ExtensionMethods` when processing `Foo`, period.
+
+Don't forget that like extension methods defined in `RewriteRails::ExtensionMethods`, you need to make sure that Rails loads them before processing your .rr files.
