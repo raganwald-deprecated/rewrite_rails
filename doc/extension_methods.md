@@ -3,7 +3,7 @@ Extension Methods
 
 > An **extension method** is a new language feature of C# starting with the 3.0 specification, as well as Visual Basic.NET starting with 9.0 and Oxygene with 2.0. Extension methods enable you to "add" methods to existing types without creating a new derived type, recompiling, or otherwise modifying the original type. Extension methods are a special kind of static method, but they are called as if they were instance methods on the extended type. For client code written in C# and Visual Basic, there is no apparent difference between calling an extension method and the methods that are actually defined in a type. --[Wikipedia](http://en.wikipedia.org/wiki/Extension_method "Extension Methods")
 
-With [RewriteRails](http://github.com/raganwald/rewrite_rails "raganwald's rewrite_rails at master - GitHub"), you can now write Extension Methods for your Ruby on Rails projects. Just like in C#, you can "add" methods to existing classes or module (like Enumerable) without modifying the original class or module. The benefit is that your changes *never* conflict with other code. The headaches of opening core classes simply go away.
+With [RewriteRails](http://github.com/raganwald/rewrite_rails "raganwald's rewrite_rails at master - GitHub"), you can now write Extension Methods for your Ruby on Rails projects. Just like in C#, you can "add" methods to existing classes or module (like Enumerable) without modifying the original class or module. The benefit is that your changes *never* [conflict with other code](http://github.com/raganwald/homoiconic/blob/master/2009-04-08/sick.md#readme "I'm Sick of this Shit"). The headaches of opening core classes simply go away.
 
 **How to Write an Extension Method**
 

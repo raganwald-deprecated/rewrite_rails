@@ -7,43 +7,51 @@ require 'sexp'
 
 module RewriteRails
 
-  # Initialize with a list of names, e.g.
-  #
-  #   Extensions.new(:frobbish => [Extension_Home::Fizz, Extension_Home::Bin])
-  #
-  # It then converts expressions of the form:
-  #
-  #    arr.frobbish
-  #
-  # into:
-  #
-  #    if arr.kind_of?(Extension_Home::Fizz)
-  #      Extension_Home::Fizz.frobbish(arr)
-  #    elsif arr.kind_of?(Extension_Home::Bin)
-  #      Extension_Home::Bin.frobbish(arr)
-  #    else
-  #      arr.frobbish
-  #    end
+  # TODO: Re-document
   class ExtensionProcessor < SexpProcessor
     
     attr_reader :methods_to_modules
     
-    Extension_Home = RewriteRails::ExtensionMethods
-    Extension_Home_Array = Extension_Home.name.split('::').map(&:to_sym)
-    
-    def initialize(methods_to_modules = nil)
-      @methods_to_modules = methods_to_modules || returning(Hash.new) { |mtm| 
-        Extension_Home.constants.map { |konst| 
-          Extension_Home.const_get(konst) 
-        }.select { |k| 
-          k.kind_of?(Module) 
-        }.each { |a_module|
-          (a_module.methods - Object.methods).each { |method|
-            (mtm[method.to_sym] ||= []) << a_module
-          }
-        }
-      }
+    def initialize()
+      @scope_stack = []
+      @methods_to_modules = Hash.new
       super()
+    end
+    
+    # Scopes is a list of fully qualified scopes that presumably exist
+    def compute_methods_to_modules(scope_name)
+      returning(Hash.new) do |mtm|
+        sub_scopes = scope_name.split('::')
+        fully_qualified_sub_scopes = (0..(sub_scopes.length - 2)).map { |n| sub_scopes[0..n] + ['ExtensionMethods'] }
+        xm_homes = (['RewriteRails::ExtensionMethods'] + (fully_qualified_sub_scopes.map { |sub|
+          sub.join('::')
+        })).map { |n|
+          begin
+            eval(n)
+          rescue NameError => ne
+            nil
+          end
+        }.compact
+        xm_homes.each do |xm_home|
+          xm_home.constants.map { |konst| 
+            xm_home.const_get(konst) 
+          }.select { |k| 
+            k.kind_of?(Module) 
+          }.each { |a_module|
+            (a_module.methods - Object.methods).each { |method|
+              (mtm[method.to_sym] ||= []) << a_module
+            }
+          }
+        end
+      end
+    end
+    
+    # handle nesting here
+    def process_module(exp)
+      inner_process_scope(exp)
+    end
+    def process_class(exp)
+      inner_process_scope(exp)
     end
     
     def process_iter(exp)
@@ -97,7 +105,7 @@ module RewriteRails
             assignment_expr,
             methods_to_modules[method_sym].inject(tail_expr) { |s_expr, a_module| 
               module_symbols = a_module.name.split('::').map(&:to_sym)
-              original_module_expr = module_expr(module_symbols - Extension_Home_Array)
+              original_module_expr = module_expr(unextended(module_symbols))
               extension_module_expr = module_expr(module_symbols)
               s(:if,
                 s(:call, process_inner_expr(receiver_expr.dup), :kind_of?, s(:arglist, original_module_expr)),
@@ -144,7 +152,7 @@ module RewriteRails
             assignment_expr,
             methods_to_modules[method_sym].inject(tail_expr) { |s_expr, a_module| 
               module_symbols = a_module.name.split('::').map(&:to_sym)
-              original_module_expr = module_expr(module_symbols - Extension_Home_Array)
+              original_module_expr = module_expr(unextended(module_symbols))
               extension_module_expr = module_expr(module_symbols)
               s(:if,
                 s(:call, process_inner_expr(receiver_expr), :kind_of?, s(:arglist, original_module_expr)),
@@ -170,65 +178,53 @@ module RewriteRails
     
     private 
     
+    # handle nesting here
+    def inner_process_scope(exp)
+      sym = exp.shift
+      name_expr = exp.shift
+      if name_expr.respond_to?(:[])
+        current_scope_name = Ruby2Ruby.new.process(xerox(name_expr))
+      else
+        current_scope_name = name_expr.to_s
+      end
+      if @scope_stack.last
+        current_scope_name = "#{@scope_stack.last}::#{current_scope_name}"
+      end
+      begin
+        @scope_stack.push(current_scope_name)
+        @old_methods_to_modules = @methods_to_modules
+        @methods_to_modules = compute_methods_to_modules(current_scope_name)
+        s(sym,
+          name_expr,
+          *(exp.map { |inner| process_inner_expr(inner) })
+        )
+      ensure
+        @methods_to_modules = @old_methods_to_modules
+        @scope_stack.pop
+        exp.clear
+      end
+    end
+    
+    # remove everything up to 'ExtensionMethods'
+    def unextended(symbol_list)
+      found = (0..(symbol_list.length - 1)).map { |n| 
+        symbol_list[n..-1] 
+      }.detect { |sub_list| 
+        sub_list.first.to_s == 'ExtensionMethods' 
+      }
+      if found
+        found[1..-1]
+      else
+        symbol_list
+      end
+    end
+    
     def xerox(it)
       eval(it.to_s)
     end
     
     def module_expr(module_symbols)
       module_symbols[1..-1].inject(s(:const, module_symbols.first)) { |mod_expr, mod_sym| s(:colon2, mod_expr, mod_sym) }
-    end
-    
-    def process_call_or_iter(exp)
-      # s(:call, s(:call, s(:lit, :foo), :andand), :bar)
-      exp.shift
-      # s(s(:call, s(:lit, :foo), :andand), :bar)
-      sub_expression = exp.first
-      if matches_extension_method_invocation(sub_expression) # s(:call, s(:lit, :foo), :andand)
-        exp.shift
-        # s( :bar )
-        receiver_expr = process_inner_expr(sub_expression[1])
-        if truthy?(receiver_expr)
-          begin
-            return s(:call, 
-              receiver_expr,
-              *(exp.map { |inner| process_inner_expr(inner) }))
-          ensure
-            exp.clear
-          end
-        elsif falsy?(receiver_expr)
-          begin
-            return receiver_expr
-          ensure
-            exp.clear
-          end
-        elsif (receiver_expr.first == :lvar)
-          lhs_and = receiver_expr
-          new_receiver = receiver_expr
-        else
-          mono_parameter = ::RewriteRails.gensym()
-          lhs_and = s(:lasgn, mono_parameter, receiver_expr)
-          new_receiver = s(:lvar, mono_parameter)
-        end
-        s(:and, 
-          lhs_and,
-          begin
-            s(:call, 
-              new_receiver,
-              *(exp.map { |inner| process_inner_expr(inner) }))
-          ensure
-            exp.clear
-          end
-        )
-      else
-        # pass through
-        begin
-          s(:call,
-            *(exp.map { |inner| process_inner_expr(inner) })
-          )
-        ensure
-          exp.clear
-        end
-      end
     end
     
     def process_inner_expr(inner)
