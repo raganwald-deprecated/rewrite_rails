@@ -173,4 +173,53 @@ It's up to you to use modules and classes to create scopes where you can place y
     
 This won't work because `Foo::ExtensionMethods` is defined in `Foo`. In the current implementation, the reason for this is that the module containing your various extension method definitions must be available to the rewriter *before* it rewrites a file. It might be possible to fidjit with things such that `Foo::ExtensionMethods` is processed in one file and the body of `Foo` in another, but the current implementation will ignore `Foo::ExtensionMethods` when processing `Foo`, period.
 
+However, go wild with:
+
+    # lib/seawater/extension_methods/number.rb
+    
+    class Seawater::ExtensionMethods::Number
+      def self.ata(depth)
+        depth_in_feet.to_f / 33.0
+      end
+    end
+
+    # lib/seawater/extension_methods/number.rb
+    
+    class Freshwater::ExtensionMethods::Number
+      def self.ata(depth)
+        depth_in_feet.to_f / 34.0
+      end
+    end
+
+    # app/controllers/conversion_controller.rr
+    
+    class Seawater::ConversionController
+    
+      def show
+        # ...
+        @pressure = @depth.ata 
+          # => something like Seawater::ExtensionMethods::Number.ata(@depth) 
+        # ...
+      end
+      
+    end
+
+    # app/models/nitrox.rr
+    
+    class Freshwater::Nitrox
+    
+      def validate
+        # ...
+        @ppo2 = self.depth.ata * self.fo2
+          # => something like Freshwater::ExtensionMethods::Number.ata(self.depth) * self.fo2
+        # ...
+      end
+      
+    end
+    
+    # config/initializers/extension_methods.rb
+    
+    Freshwater::ExtensionMethods::Number
+    Seawater::ExtensionMethods::Number
+    
 Don't forget that like extension methods defined in `RewriteRails::ExtensionMethods`, you need to make sure that Rails loads them before processing your .rr files.
