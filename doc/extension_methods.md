@@ -156,7 +156,7 @@ It's up to you to use modules and classes to create scopes where you can place y
 
     class Foo
       module ExtensionMethods
-        class Number
+        class Numeric
           def self.ata(depth_in_feet)
             depth_in_feet.to_f / 33.0 # FSW
           end
@@ -177,7 +177,7 @@ However, go wild with:
 
     # lib/seawater/extension_methods/number.rb
     
-    class Seawater::ExtensionMethods::Number
+    class Seawater::ExtensionMethods::Numeric
       def self.ata(depth)
         depth_in_feet.to_f / 33.0
       end
@@ -185,7 +185,7 @@ However, go wild with:
 
     # lib/seawater/extension_methods/number.rb
     
-    class Freshwater::ExtensionMethods::Number
+    class Freshwater::ExtensionMethods::Numeric
       def self.ata(depth)
         depth_in_feet.to_f / 34.0
       end
@@ -198,7 +198,7 @@ However, go wild with:
       def show
         # ...
         @pressure = @depth.ata 
-          # => something like Seawater::ExtensionMethods::Number.ata(@depth) 
+          # => something like Seawater::ExtensionMethods::Numeric.ata(@depth) 
         # ...
       end
       
@@ -211,7 +211,7 @@ However, go wild with:
       def validate
         # ...
         @ppo2 = self.depth.ata * self.fo2
-          # => something like Freshwater::ExtensionMethods::Number.ata(self.depth) * self.fo2
+          # => something like Freshwater::ExtensionMethods::Numeric.ata(self.depth) * self.fo2
         # ...
       end
       
@@ -219,7 +219,7 @@ However, go wild with:
     
     # config/initializers/extension_methods.rb
     
-    Freshwater::ExtensionMethods::Number
-    Seawater::ExtensionMethods::Number
+    Freshwater::ExtensionMethods::Numeric
+    Seawater::ExtensionMethods::Numeric
     
 Don't forget that like extension methods defined in `RewriteRails::ExtensionMethods`, you need to make sure that Rails loads them before processing your .rr files.
