@@ -13,8 +13,8 @@ module RewriteRails
     attr_reader :methods_to_modules
     
     def initialize()
-      @scope_stack = []
-      @methods_to_modules = Hash.new
+      @scope_stack = ['::ExtensionMethods']
+      @methods_to_modules = compute_methods_to_modules('::ExtensionMethods')
       super()
     end
     
@@ -71,7 +71,7 @@ module RewriteRails
 =end
       sub_expression = exp.first
       # s(:call, s(:lvar, :foo), :frobbish, ...)
-      if matches_extension_method_invocation(sub_expression)
+      if matches_subclass_extension_method_invocation(sub_expression)
 =begin
       s(:if, 
         s(:call, s(:call, nil, :expr, s(:arglist)), :kind_of?, s(:arglist, s(:colon2, s(:colon2, s(:const, :RewriteRails), :Extensions), :Array))), 
@@ -103,12 +103,10 @@ module RewriteRails
         begin
           s(:block,
             assignment_expr,
-            methods_to_modules[method_sym].inject(tail_expr) { |s_expr, a_module| 
+            methods_to_modules[method_sym].inject(tail_expr) { |s_expr, a_module|
               module_symbols = a_module.name.split('::').map(&:to_sym)
-              original_module_expr = module_expr(unextended(module_symbols))
               extension_module_expr = module_expr(module_symbols)
-              s(:if,
-                s(:call, process_inner_expr(receiver_expr.dup), :kind_of?, s(:arglist, original_module_expr)),
+              if unextended(module_symbols).join('::') == ::Object.name
                 s(:iter, 
                   s(:call, 
                     extension_module_expr, 
@@ -119,9 +117,25 @@ module RewriteRails
                     )
                   ), 
                   *(exp[1..-1].map { |arg| process_inner_expr(arg) })
-                ),
-                s_expr
-              )
+                )
+              else
+                original_module_expr = module_expr(unextended(module_symbols))
+                s(:if,
+                  s(:call, process_inner_expr(receiver_expr.dup), :kind_of?, s(:arglist, original_module_expr)),
+                  s(:iter, 
+                    s(:call, 
+                      extension_module_expr, 
+                      method_sym, 
+                      s(:arglist,
+                        process_inner_expr(receiver_expr.dup),
+                        *(arglist[1..-1].map { |arg| process_inner_expr(arg) })
+                      )
+                    ), 
+                    *(exp[1..-1].map { |arg| process_inner_expr(arg) })
+                  ),
+                  s_expr
+                )
+              end
             }
           )
         ensure
@@ -141,21 +155,23 @@ module RewriteRails
     
     def process_call(exp)
       begin
-        if matches_extension_method_invocation(exp)
+        if matches_subclass_extension_method_invocation(exp)
           var_sym = RewriteRails.gensym
           assignment_expr = s(:lasgn, var_sym, process_inner_expr(exp[1]))
           receiver_expr = s(:lvar, var_sym)
           method_sym = exp[2]
           arglist = exp[3] || s(:arglist)
-          tail_expr = s(*(exp.map { |inner| process_inner_expr(inner) }))
+          tail_expr = s(
+            :call,
+            receiver_expr,
+            *(exp[2..-1].map { |inner| process_inner_expr(inner) })
+          )
           s(:block,
             assignment_expr,
             methods_to_modules[method_sym].inject(tail_expr) { |s_expr, a_module| 
               module_symbols = a_module.name.split('::').map(&:to_sym)
-              original_module_expr = module_expr(unextended(module_symbols))
               extension_module_expr = module_expr(module_symbols)
-              s(:if,
-                s(:call, process_inner_expr(receiver_expr), :kind_of?, s(:arglist, original_module_expr)),
+              if unextended(module_symbols).join('::') == ::Object.name
                 s(:call, 
                   extension_module_expr, 
                   method_sym, 
@@ -163,9 +179,22 @@ module RewriteRails
                     process_inner_expr(receiver_expr),
                     *(arglist[1..-1].map { |arg| process_inner_expr(arg) })
                   )
-                ), 
-                s_expr
-              )
+                )
+              else
+                original_module_expr = module_expr(unextended(module_symbols))
+                s(:if,
+                  s(:call, process_inner_expr(receiver_expr), :kind_of?, s(:arglist, original_module_expr)),
+                  s(:call, 
+                    extension_module_expr, 
+                    method_sym, 
+                    s(:arglist,
+                      process_inner_expr(receiver_expr),
+                      *(arglist[1..-1].map { |arg| process_inner_expr(arg) })
+                    )
+                  ), 
+                  s_expr
+                )
+              end
             }
           )
         else
@@ -231,7 +260,7 @@ module RewriteRails
         inner.kind_of?(Array) ? process(xerox(inner)) : inner
     end
     
-    def matches_extension_method_invocation(sexp)
+    def matches_subclass_extension_method_invocation(sexp)
       sexp.respond_to?(:[]) && sexp[0] == :call && methods_to_modules.key?(sexp[2])
     end
     

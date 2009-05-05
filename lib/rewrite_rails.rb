@@ -8,6 +8,8 @@ require 'ruby2ruby'
 require 'ftools'
 require 'parse_tree_extensions'
 
+require "#{File.dirname(__FILE__)}/rewrite_rails/call_by_name/class_processor"
+
 class Unifier
   include UnifiedRuby
 end
@@ -40,7 +42,7 @@ module RewriteRails
     [
       Andand, 
       StringToBlock, 
-      Into,
+      # Into,
       PersistingCallByNameProcessor,
       ExtensionProcessor
     ].inject(sexp) do |acc, rewrite_class|

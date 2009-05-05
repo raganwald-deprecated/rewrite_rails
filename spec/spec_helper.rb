@@ -1,10 +1,49 @@
-ENV["RAILS_ENV"] = "test"
-require File.expand_path(File.join(RAILS_ROOT, 'config', "environment"))
+# ENV["RAILS_ENV"] = "test"
+# require File.expand_path(File.join(RAILS_ROOT, 'config', "environment"))
+require 'rubygems'
 require 'spec' # despite the name, you need sudo gem install rspec
-require 'spec/rails' # and here, sudo gem install rspec-rails
+# require 'spec/rails' # and here, sudo gem install rspec-rails
 Dir["#{File.dirname(__FILE__)}/helpers/*_helper.rb"].each do |helper|
    require helper
 end
+
+Dir["#{File.dirname(__FILE__)}/../lib/*.rb"].each do |r|
+   require r
+end
+
+Dir["#{File.dirname(__FILE__)}/../lib/rewrite_rails/*.rb"].each do |r|
+   require r
+end
+
+Dir["#{File.dirname(__FILE__)}/../lib/rewrite_rails/call_by_name/*.rb"].each do |r|
+   require r
+end
+
+module Returning
+  
+  def returning(foo)
+    yield foo if block_given?
+    foo
+  end
+  
+end    
+
+unless :foo.respond_to?(:returning)
+  Object.send(:include, Returning)
+end
+
+module ToProc
+  
+  def to_proc
+    Proc.new { |*args| args.shift.__send__(self, *args) }
+  end
+  
+end
+
+unless :bar.respond_to?(:to_proc)
+  Symbol.send(:include, ToProc)
+end
+
 
 Spec::Runner.configure do |config|
   # If you're not using ActiveRecord you should remove these
