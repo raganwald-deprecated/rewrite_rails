@@ -53,7 +53,7 @@ As mentioned, RewriteRails will place a `.rb` in the `rewritten` directory for e
 
 **How do I debug `.rr` files?**
 
-Very carefully. At this time, the rewritten file doe snot contain any blank lines or comments, and obviously some of what you wrote is rewritten into a different form. As a result, the code you write may be on line 42 in your `.rr` file but end up on line 23 in the resulting `.rb` file. This can be tedious if you are dealing with a lot of errors and like your IDE's ability to jump right to the offending line of source code.
+Very carefully. At this time, the rewritten file does not contain any blank lines or comments, and obviously some of what you wrote is rewritten into a different form. As a result, the code you write may be on line 42 in your `.rr` file but end up on line 23 in the resulting `.rb` file. This can be tedious if you are dealing with a lot of errors and like your IDE's ability to jump right to the offending line of source code.
 
 TODO: Perfom a little diff magic and modify each `.rb` file so that as many lines of code as possible end up on the same line number as in the original `.rr` file.
 
