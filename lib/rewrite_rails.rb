@@ -44,7 +44,8 @@ module RewriteRails
       StringToBlock, 
       # Into,
       PersistingCallByNameProcessor,
-      ExtensionProcessor
+      ExtensionProcessor,
+      Returning
     ].inject(sexp) do |acc, rewrite_class|
       eval(rewrite_class.new.process(acc).to_s)
     end
