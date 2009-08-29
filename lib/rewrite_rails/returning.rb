@@ -17,14 +17,6 @@ module RewriteRails
   # => expression instead of other_expression nearly all of the time
   #
   class Returning < SexpProcessor
-  
-    def self.returning(value)
-      if block_given?
-        return yield(value)
-      else
-        value
-      end
-    end    
     
     # [:iter, 
     #   [:call, nil, :returning, [:arglist, [:lit, :foo]]], 
