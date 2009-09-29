@@ -12,7 +12,17 @@ module RewriteRails
     
     include SexpUtilities
     
-    ANAPHOR_SYMBOL = :_
+    ANAPHOR_SYMBOLS = [:_, :it, :its]
+    
+    ANAPHOR_PARAMETERS = ANAPHOR_SYMBOLS.inject({}) { |refs, it| 
+      refs.merge!({ [:lasgn, it] => it })
+      refs
+    }
+    
+    ANAPHOR_REFERENCES = ANAPHOR_SYMBOLS.inject({}) { |refs, it| 
+      refs.merge!({ [:lvar, it] => it, [:call, nil, it, [:arglist]] => it })
+      refs
+    }
 
 =begin
   [:iter, 
@@ -54,15 +64,18 @@ module RewriteRails
         type_sexp, call_sexp, arg_list_sexp, block_sexp = exp.map { |inner| 
           process_inner_expr(inner) 
         }
-        if arg_list_sexp.nil? && contains_direct_anaphor_reference(prune(block_sexp))
-          arg_list_sexp = s(:lasgn, ANAPHOR_SYMBOL)
-          block_sexp = convert_anaphor_references(block_sexp)
+        if arg_list_sexp.nil? and (anaphor = direct_anaphor_reference_contained(prune(block_sexp)))
+          #puts anaphor
+          arg_list_sexp = s(:lasgn, anaphor)
+          block_sexp = convert_anaphor_references(block_sexp, anaphor)
         end
         s(
           *[type_sexp, call_sexp, arg_list_sexp, block_sexp].map { |inner| 
             process_inner_expr(inner) 
           }
         )
+      rescue Exception
+        puts "Exception for #{[type_sexp, call_sexp, arg_list_sexp, block_sexp].to_a.inspect}"
       ensure
         exp.clear
       end
@@ -70,22 +83,22 @@ module RewriteRails
     
     private
     
-    def convert_anaphor_references(sexp)
+    def convert_anaphor_references(sexp, anaphor_symbol)
       if sexp.nil?
         nil
       elsif !(sexp.respond_to?(:[]) && sexp.respond_to?(:empty?) && sexp.respond_to?(:first))
         sexp
       elsif sexp.empty?
         []
-      elsif sexp.to_a == [:call, nil, ANAPHOR_SYMBOL, [:arglist]]
-        s(:lvar, ANAPHOR_SYMBOL)
+      elsif ANAPHOR_REFERENCES[sexp.to_a]
+        s(:lvar, anaphor_symbol)
       else
-        s(*sexp.map { |inner| convert_anaphor_references(inner) })
+        s(*sexp.map { |inner| convert_anaphor_references(inner, anaphor_symbol) })
       end
     end
     
-    def contains_direct_anaphor_reference(sexp)
-      deep_matches_anaphor_reference(prune(sexp))
+    def direct_anaphor_reference_contained(sexp)
+      deep_matching_anaphor_reference(prune(sexp))
     end
     
     # prunes a sexp of all blocks, does not return a valid ruby expression
@@ -97,22 +110,20 @@ module RewriteRails
         sexp
       elsif sexp.empty?
         []
-      elsif sexp.first == :iter && (sexp[2].nil? || sexp[2] && sexp[2].to_a == [:lasgn, ANAPHOR_SYMBOL])
+      elsif sexp.first == :iter && (sexp[2].nil? || sexp[2] && ANAPHOR_PARAMETERS[sexp[2].to_a])
          r = sexp[0..-2].map { |inner| prune(inner) }
       else
         sexp.map { |inner| prune(inner) }
       end
     end
     
-    def shallow_matches_anaphor_reference(sexp)
-      return false unless list?(sexp)
-      sexp_a = sexp.to_a
-      sexp_a == [:lvar, ANAPHOR_SYMBOL] or sexp_a == [:call, nil, ANAPHOR_SYMBOL, [:arglist]]
+    def shallow_matching_anaphor_reference(sexp)
+      ANAPHOR_REFERENCES[sexp.to_a] if list?(sexp)
     end
     
-    def deep_matches_anaphor_reference(sexp)
-      shallow_matches_anaphor_reference(sexp) or 
-      (list?(sexp) && sexp.detect { |element| deep_matches_anaphor_reference(element) })
+    def deep_matching_anaphor_reference(sexp)
+      shallow_matching_anaphor_reference(sexp) or 
+      sexp.map { |element| deep_matching_anaphor_reference(element) }.compact.first if list?(sexp)
     end
     
   end
