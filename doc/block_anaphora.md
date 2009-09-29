@@ -1,7 +1,7 @@
 Block Anaphora
 ===
 
-When writing a block that takes just one parameter, you can use either `it` or `its` as a parameter without actually declaring the parameter using `{ |it| ... }`. This is a win whenever the purpose of the block and the parameter is obvious, for example:
+The [RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master) plugin supports Block Anaphora: When writing a block that takes just one parameter, you can use either `it` or `its` as a parameter without actually declaring the parameter using `{ |it| ... }`. This is a win whenever the purpose of the block and the parameter is obvious, for example:
 
     Person.all(...).map { its.first_name }
 
