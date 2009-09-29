@@ -25,6 +25,8 @@ module RewriteRails
   #  end
   #
   class Andand < SexpProcessor
+    
+    include SexpUtilities
 
 =begin
 s(:iter,
@@ -165,18 +167,6 @@ s(:iter,
     end
     
     private 
-    
-    def truthy?(sexp)
-      sexp.respond_to?(:[]) && (sexp[0] == :true || sexp[0] == :lit || sexp[0] == :str || sexp[0] == :array)
-    end
-    
-    def falsy?(sexp)
-      sexp.respond_to?(:[]) && (sexp[0] == :nil || sexp[0] == :false)
-    end
-    
-    def process_inner_expr(inner)
-        inner.kind_of?(Array) ? process(inner) : inner
-    end
     
     def matches_andand_invocation(sexp)
       sexp.respond_to?(:[]) && sexp[0] == :call && sexp[2] == :andand

@@ -11,6 +11,10 @@ Dir["#{File.dirname(__FILE__)}/../lib/*.rb"].each do |r|
    require r
 end
 
+Dir["#{File.dirname(__FILE__)}/../lib/rewrite_rails/sexp_utilities.rb"].each do |r|
+   require r
+end
+
 Dir["#{File.dirname(__FILE__)}/../lib/rewrite_rails/*.rb"].each do |r|
    require r
 end

@@ -43,7 +43,7 @@ The good news is that while your colleague's rewriting destroys what you origina
 
 **How do I know what will be rewritten?**
 
-Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/doc). Every rewriter gets its own page. At the moment, those are [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile"), [Into](http://github.com/raganwald/rewrite_rails/tree/master/doc/into.md#readme), [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md#readme "doc/string_to_block.md"), [Call by Name](http://github.com/raganwald/rewrite_rails/tree/master/doc/call_by_name.md#readme "doc/call_by_name.md"), [Extension Methods](http://github.com/raganwald/rewrite_rails/tree/master/doc/extension_methods.md#readme "doc/extension_methods.md"), and [Returning](http://github.com/raganwald/rewrite_rails/tree/master/doc/returning.md#readme). More will be added as I write them or port them from the old rewrite gem.
+Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/doc). Every rewriter gets its own page. At the moment, those are [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile"), [Into](http://github.com/raganwald/rewrite_rails/tree/master/doc/into.md#readme), [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md#readme "doc/string_to_block.md"), [Call by Name](http://github.com/raganwald/rewrite_rails/tree/master/doc/call_by_name.md#readme "doc/call_by_name.md"), [Extension Methods](http://github.com/raganwald/rewrite_rails/tree/master/doc/extension_methods.md#readme "doc/extension_methods.md"), [Returning](http://github.com/raganwald/rewrite_rails/tree/master/doc/returning.md#readme), and [Block Anaphora](http://github.com/raganwald/rewrite_rails/tree/master/doc/block_anaphora.md#readme "doc/block_anaphora.md"). More will be added as I write them or port them from the old rewrite gem.
 
 **How can I see what is rewritten?**
 
@@ -55,11 +55,11 @@ As mentioned, RewriteRails will place a `.rb` in the `rewritten` directory for e
 
 Very carefully. At this time, the rewritten file does not contain any blank lines or comments, and obviously some of what you wrote is rewritten into a different form. As a result, the code you write may be on line 42 in your `.rr` file but end up on line 23 in the resulting `.rb` file. This can be tedious if you are dealing with a lot of errors and like your IDE's ability to jump right to the offending line of source code.
 
-TODO: Perfom a little diff magic and modify each `.rb` file so that as many lines of code as possible end up on the same line number as in the original `.rr` file.
+TODO: Perform a little diff magic and modify each `.rb` file so that as many lines of code as possible end up on the same line number as in the original `.rr` file.
 
 **My colleagues don't mind me writing .rr files, but they prefer .rb files. What do we do?**
 
-RewriteRails its generated `.rb` files in its own `rewritten` directory, and ignores `.rb` files in Rails' standard directories. So if your team prefers to have some `.rb` files and some `.rr` files, you know that the `.rb` files in Rails' standard directories are all ok to edit as you see fit.
+RewriteRails puts its generated `.rb` files in its own `rewritten` directory, and ignores `.rb` files in Rails' standard directories. So if your team prefers to have some `.rb` files and some `.rr` files, you know that the `.rb` files in Rails' standard directories are all ok to edit as you see fit.
 
 In other words, you can write `.rb` files whenever you want and as long as they are in Rails' standard directories, they will behave exactly as you expect. You can mix `.rb` and `.rr` files as much as you like.
 

@@ -45,7 +45,8 @@ module RewriteRails
       # Into,
       PersistingCallByNameProcessor,
       ExtensionProcessor,
-      Returning
+      Returning,
+      BlockAnaphora
     ].inject(sexp) do |acc, rewrite_class|
       eval(rewrite_class.new.process(acc).to_s)
     end

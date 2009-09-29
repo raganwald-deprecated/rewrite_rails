@@ -40,7 +40,7 @@ Here're some examples using inferred parameters:
 it
 ---
 
-The third abbreviation is a special case. If there is only one parameter, you can use `_` (the underscore) without naming it. This is often called the "hole" or pronounced "it." If you use "it," then *String to Block* doesn't try to infer any more parameters, so this can help you write things like:
+The third abbreviation is a special case. If there is only one parameter, you can use `_` (the underscore) without naming it. This is pronounced "it,"  because it works like an *anaphor* in human language. If you use "it," then *String to Block* doesn't try to infer any more parameters, so this can help you write things like:
 
     foo.select(&'_')
       => foo.select { |_| _ }
@@ -48,7 +48,7 @@ The third abbreviation is a special case. If there is only one parameter, you ca
     bar.map(&'_.inject { |sum, n| sum + n }')
       => bar.map { |_| _.inject { |sum, n| sum + n } }
 
-Admittedly, use of "it"/the hole is very much a matter of taste.
+[Anaphora in Ruby](http://github.com/raganwald/homoiconic/blob/master/2009-09-22/anaphora.md#readme "") discusses this idea in greater detail. Also, the [Block Anaphora](http:block_anaphora.md "") rewriter implements this version of "it" without converting a string to a block.
 
 point-free
 ---
