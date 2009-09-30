@@ -290,6 +290,58 @@ describe RewriteRails::BlockAnaphora do
       
     end
   
+    describe "not an anaphor" do
+      
+      before(:each) do
+        @source = RewriteRails.clean do
+          total = 0
+          3.times {
+            (1..10).each { |it|
+              total += it 
+            }
+          }
+        end
+        @target = RewriteRails.clean do
+          total = 0
+          3.times {
+            (1..10).each { |it|
+              total += it 
+            }
+          }
+        end
+      end
+      
+      it "should not add the anaphor to the outer block because the reference occurs" do
+        @it.process(@source).to_a.should == @target.to_a
+      end
+      
+    end
+    
+    describe "a nested anaphor" do
+      
+      before(:each) do
+        @source = RewriteRails.clean do
+          3.times {
+            (1..10).each { |number|
+              it += number 
+            }
+          }
+        end
+        @target = RewriteRails.clean do
+          3.times { |it|
+            (1..10).each { |number| 
+              it += number 
+            }
+          }
+        end
+      end
+      
+      it "should add the anaphor to the outer block because the reference occurs" do
+        @it.process(@source).to_a.should == @target.to_a
+      end
+      
+    end
+    
   end
 
 end
