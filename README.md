@@ -15,6 +15,16 @@ If you have considered using `Object#andand` or `String#to_proc`, but hesitated 
 Q & A
 -----
 
+**What language features does RewriteRails support?**
+
+* [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile") is a lightweight Maybe Monad. The RewriteRails version provides shortcut execution semantics.
+* [Into](http://github.com/raganwald/rewrite_rails/tree/master/doc/into.md#readme) is a Thrush Combinator.
+* [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md#readme "doc/string_to_block.md") provides a really lightweight syntax for writing pure functional blocks.
+* [Call by Name](http://github.com/raganwald/rewrite_rails/tree/master/doc/call_by_name.md#readme "doc/call_by_name.md") is a really easy way to fake your own macros without needing to fool around with syntax trees.
+* [Extension Methods](http://github.com/raganwald/rewrite_rails/tree/master/doc/extension_methods.md#readme "doc/extension_methods.md") lets you extend classes with your own methods without global monkey-patches.
+* [Returning](http://github.com/raganwald/rewrite_rails/tree/master/doc/returning.md#readme) improves Rails' Kestrel Combinator by handling re-assignment.
+* [Block Anaphora](http://github.com/raganwald/rewrite_rails/tree/master/doc/block_anaphora.md#readme "doc/block_anaphora.md") provides support for Groovy's `it` and Common Lisp's Anaphora.
+
 **How does it work?**
 
 Install the `RewriteRails` plugin in your Rails project and the gems ParseTree and Ruby2Ruby (in your system or frozen into your project). You can write ruby files as usual (e.g. `foo_bar.rb`), and things will work as usual. You can also have `RewriteRails` rewrite Ruby files for you. Any file with the suffix `.rr` will be "rewritten."
@@ -43,7 +53,7 @@ The good news is that while your colleague's rewriting destroys what you origina
 
 **How do I know what will be rewritten?**
 
-Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/doc). Every rewriter gets its own page. At the moment, those are [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile"), [Into](http://github.com/raganwald/rewrite_rails/tree/master/doc/into.md#readme), [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md#readme "doc/string_to_block.md"), [Call by Name](http://github.com/raganwald/rewrite_rails/tree/master/doc/call_by_name.md#readme "doc/call_by_name.md"), [Extension Methods](http://github.com/raganwald/rewrite_rails/tree/master/doc/extension_methods.md#readme "doc/extension_methods.md"), [Returning](http://github.com/raganwald/rewrite_rails/tree/master/doc/returning.md#readme), and [Block Anaphora](http://github.com/raganwald/rewrite_rails/tree/master/doc/block_anaphora.md#readme "doc/block_anaphora.md"). More will be added as I write them or port them from the old rewrite gem.
+Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/doc). Every rewriter gets its own page. 
 
 **How can I see what is rewritten?**
 
