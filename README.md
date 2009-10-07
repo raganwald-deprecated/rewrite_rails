@@ -17,21 +17,21 @@ Q & A
 
 **What language features does RewriteRails support?**
 
-* [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile") is a lightweight Maybe Monad. The RewriteRails version provides shortcut execution semantics.
+* [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile) is a lightweight Maybe Monad. The RewriteRails version provides shortcut execution semantics.
 * [Into](http://github.com/raganwald/rewrite_rails/tree/master/doc/into.md#readme) is a Thrush Combinator.
-* [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md#readme "doc/string_to_block.md") provides a really lightweight syntax for writing pure functional blocks.
-* [Call by Name](http://github.com/raganwald/rewrite_rails/tree/master/doc/call_by_name.md#readme "doc/call_by_name.md") is a really easy way to fake your own macros without needing to fool around with syntax trees.
-* [Extension Methods](http://github.com/raganwald/rewrite_rails/tree/master/doc/extension_methods.md#readme "doc/extension_methods.md") lets you extend classes with your own methods without global monkey-patches.
+* [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md#readme) provides a really lightweight syntax for writing pure functional blocks.
+* [Call by Name](http://github.com/raganwald/rewrite_rails/tree/master/doc/call_by_name.md#readme) is a really easy way to fake your own macros without needing to fool around with syntax trees.
+* [Extension Methods](http://github.com/raganwald/rewrite_rails/tree/master/doc/extension_methods.md#readme) lets you extend classes with your own methods without global monkey-patches.
 * [Returning](http://github.com/raganwald/rewrite_rails/tree/master/doc/returning.md#readme) improves Rails' Kestrel Combinator by handling re-assignment.
-* [Block Anaphora](http://github.com/raganwald/rewrite_rails/tree/master/doc/block_anaphora.md#readme "doc/block_anaphora.md") provides support for Groovy's `it` and Common Lisp's Anaphora.
+* [Block Anaphora](http://github.com/raganwald/rewrite_rails/tree/master/doc/block_anaphora.md#readme) provides support for Groovy's `it` and Common Lisp's Anaphora.
 
 **Do we really have to go to all the trouble of rewriting code to support these features?**
 
-Some of rewriters--such as [Into](http://github.com/raganwald/rewrite_rails/tree/master/doc/into.md#readme) and [Extension Methods](http://github.com/raganwald/rewrite_rails/tree/master/doc/extension_methods.md#readme "doc/extension_methods.md")--could have been implemented by opening core classes and monkey-patching, but implementing them as rewriters means that you have higher performance and [fewer conflicts with existing code](http://blog.lawrencepit.com/2009/01/11/try-as-you-might/ "Try() as you might").
+Some of rewriters--such as [Into](http://github.com/raganwald/rewrite_rails/tree/master/doc/into.md#readme) and [Extension Methods](http://github.com/raganwald/rewrite_rails/tree/master/doc/extension_methods.md#readme)--could have been implemented by opening core classes and monkey-patching, but implementing them as rewriters means that you have higher performance and [fewer conflicts with existing code](http://blog.lawrencepit.com/2009/01/11/try-as-you-might/ "Try() as you might").
 
-Some of the rewriters--such as [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile") and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md#readme "doc/string_to_block.md")--have better semantics when implemented using rewriting instead of opening classes.
+Some of the rewriters--such as [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile) and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md#readme "doc/string_to_block.md")--have better semantics when implemented using rewriting instead of opening classes.
 
-And some of the rewriters--such as [Call by Name](http://github.com/raganwald/rewrite_rails/tree/master/doc/call_by_name.md#readme "doc/call_by_name.md") and [Block Anaphora](http://github.com/raganwald/rewrite_rails/tree/master/doc/block_anaphora.md#readme "doc/block_anaphora.md")--simply cannot be implemented without rewriting code.
+And some of the rewriters--such as [Call by Name](http://github.com/raganwald/rewrite_rails/tree/master/doc/call_by_name.md#readme) and [Block Anaphora](http://github.com/raganwald/rewrite_rails/tree/master/doc/block_anaphora.md#readme "doc/block_anaphora.md")--simply cannot be implemented without rewriting code.
 
 **How does it work?**
 
