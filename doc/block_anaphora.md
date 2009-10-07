@@ -30,3 +30,7 @@ It works best when you would naturally use the word "it" or the possessive "its"
 **more**
 
 The post [Anaphora in Ruby](http://github.com/raganwald/homoiconic/blob/master/2009-09-22/anaphora.md#readme "") discusses block anaphora.
+
+---
+
+[RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master#readme)

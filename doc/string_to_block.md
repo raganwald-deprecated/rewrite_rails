@@ -113,3 +113,7 @@ Third (and this is a subtle point), `String#to_proc` worked by using `eval` in t
       # => [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
 This works because RewriteRails doesn't construct a string and ask Ruby to `eval` it globally at run time, it converts the code in the file and let's Ruby's interpreter determine how to treat `increase`.
+
+---
+
+[RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master#readme)

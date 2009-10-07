@@ -52,3 +52,7 @@ Limitations
 ---
 
 The monkey-patching version also works with things that can be converted to procs with `#to_proc`. This version does not, because it is strictly syntactical.
+
+---
+
+[RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master#readme)

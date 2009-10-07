@@ -223,3 +223,7 @@ However, go wild with:
     Seawater::ExtensionMethods::Numeric
     
 Don't forget that like extension methods defined in `RewriteRails::ExtensionMethods`, you need to make sure that Rails loads them before processing your .rr files.
+
+---
+
+[RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master#readme)

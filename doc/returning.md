@@ -38,3 +38,7 @@ Like all processors in RewriteRails, #returning is only rewritten in `.rr` files
 
 * [returning.rb](http://github.com/raganwald/rewrite_rails/tree/master/lib/rewrite_rails/returning.rb "")
 * [Rewriting Returning in Rails](http://github.com/raganwald/homoiconic/blob/master/2009-08-29/returning.md#readme "")
+
+---
+
+[RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master#readme)
