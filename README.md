@@ -25,13 +25,19 @@ Q & A
 * [Returning](http://github.com/raganwald/rewrite_rails/tree/master/doc/returning.md#readme) improves Rails' Kestrel Combinator by handling re-assignment.
 * [Block Anaphora](http://github.com/raganwald/rewrite_rails/tree/master/doc/block_anaphora.md#readme "doc/block_anaphora.md") provides support for Groovy's `it` and Common Lisp's Anaphora.
 
+**Do we really have to go to all the trouble of rewriting code to support these features?**
+
+Some of rewriters--such as [Into](http://github.com/raganwald/rewrite_rails/tree/master/doc/into.md#readme) and [Extension Methods](http://github.com/raganwald/rewrite_rails/tree/master/doc/extension_methods.md#readme "doc/extension_methods.md")--could have been implemented by opening core classes and monkey-patching, but implementing them as rewriters means that you have higher performance and [fewer conflicts with existing code](http://blog.lawrencepit.com/2009/01/11/try-as-you-might/ "Try() as you might").
+
+Some of the rewriters--such as [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "doc/andand.textile") and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md#readme "doc/string_to_block.md")--have better semantics when implemented using rewriting instead of opening classes.
+
+And some of the rewriters--such as [Call by Name](http://github.com/raganwald/rewrite_rails/tree/master/doc/call_by_name.md#readme "doc/call_by_name.md") and [Block Anaphora](http://github.com/raganwald/rewrite_rails/tree/master/doc/block_anaphora.md#readme "doc/block_anaphora.md")--simply cannot be implemented without rewriting code.
+
 **How does it work?**
 
 Install the `RewriteRails` plugin in your Rails project and the gems ParseTree and Ruby2Ruby (in your system or frozen into your project). You can write ruby files as usual (e.g. `foo_bar.rb`), and things will work as usual. You can also have `RewriteRails` rewrite Ruby files for you. Any file with the suffix `.rr` will be "rewritten."
 
 RewriteRails takes your `.rr` files and scans them with *rewriters*. Each rewriter looks for a certain kind of Ruby code and rewrites it into another kind of Ruby code. This produces the same effect as a C Preprocessor, a C++ template, or a Lisp Macro.
-
-Currently, the rewriters are things that could be implemented by opening core classes and monkey-patching, but implementing them as rewriters means that you have higher performance and [fewer conflicts with existing code](http://blog.lawrencepit.com/2009/01/11/try-as-you-might/ "Try() as you might").
 
 By default, the rewritten files are stored in the `rewritten` directory of your project. So if you create a file called `foo.rr` in `lib` directory, you will find a file called `foo.rb` in `rewritten/lib`. This means you can always see what RewriteRails is doing, and if you want to stop using it you have 100% working Ruby files.
 
@@ -50,10 +56,6 @@ Your colleague "fixes" it by rewriting it to:
     (first_product = Product.find(:first, ...) and first_product.update_attribute(:on_sale, true))
 
 The good news is that while your colleague's rewriting destroys what you originally wrote, RewriteRails leaves your `.rr` files just the way it found them. So with RewriteRails, both you and your colleague can get along just fine.
-
-**How do I know what will be rewritten?**
-
-Consult [the doc folder](http://github.com/raganwald/rewrite_rails/tree/master/doc). Every rewriter gets its own page. 
 
 **How can I see what is rewritten?**
 
