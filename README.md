@@ -88,23 +88,19 @@ In other words, you can write `.rb` files whenever you want and as long as they 
 
 Now when you run your project in production, the `.rr` files will not be rewritten on the fly, but Rails will continue to find the rewritten `.rb` files in the `rewritten` directory. You don't have to do anything else, you won't need ParseTree, Ruby2Ruby, or RewriteRails on your production servers.
 
-**How do I use RewriteRails in my templates?**
-
-At this time I haven't figured out how to make rewriting work in erb or haml templates. I think the template engine itself has to be hooked rather than working with the files.
-
-**How does this differ from the rewrite gem?**
-
-Where the rewrite gem allows you to rewrite specific blocks of code and to treat rewriters as first-class entities for meta-meta-programming, `RewriteRails` simply rewrites entire files with a known set of rewriters.
-
 **Why is this better than the rewrite gem?**
 
 First, it's better for you tomorrow. If in the distant future there is some problem that breaks Rewrite (like changes to its dependencies or to MRI), you have your .rb files intact and working.
 
 Second, it's better for you *today*. If someone else goes wild with monkey-patching, it won't break any of your rewritten code.
 
-**There must be some reason to prefer rewriting on the fly instead of rewriting files!**
+**Sounds great! Are there any issues I should know about before jumping in with both feet?**
 
-Well, if you love abstractions the Rewrite gem treats rewriters as first-class entities and lets you programatically apply them to individual blocks of code at run time. If you can think of a reason why you need that functionality, please get in touch, I'd like to understand the use case.
+[Yes](http://github.com/raganwald/rewrite_rails/tree/master/doc/issues.md#readme "Issues").
+
+**How does this differ from the old rewrite gem?**
+
+Where the rewrite gem allows you to rewrite specific blocks of code and to treat rewriters as first-class entities for meta-meta-programming, `RewriteRails` simply rewrites entire files with a known set of rewriters. If you love abstractions the Rewrite gem treats rewriters as first-class entities and lets you programatically apply them to individual blocks of code at run time.
 
 **Do I have to run any rake tasks?**
 
