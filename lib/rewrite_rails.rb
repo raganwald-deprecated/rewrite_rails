@@ -40,13 +40,13 @@ module RewriteRails
   
   def self.from_sexp(sexp)
     [
+      BlockAnaphora,
       Andand, 
       StringToBlock, 
       # Into,
       PersistingCallByNameProcessor,
       ExtensionProcessor,
-      Returning,
-      BlockAnaphora
+      Returning
     ].inject(sexp) do |acc, rewrite_class|
       eval(rewrite_class.new.process(acc).to_s)
     end
