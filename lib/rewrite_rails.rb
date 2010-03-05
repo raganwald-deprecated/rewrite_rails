@@ -43,7 +43,7 @@ module RewriteRails
       BlockAnaphora,
       Andand, 
       StringToBlock, 
-      # Into,
+      Into,
       PersistingCallByNameProcessor,
       ExtensionProcessor,
       Returning
@@ -101,14 +101,20 @@ module RewriteRails
   def self.rewrite_file(rr_path)
     root = File.dirname(rr_path)
     rb_path = target_path("#{rr_path[/^(.*)\.rr$/,1]}.rb")
-    File.makedirs(File.dirname(rb_path))
-    rr = File.read(rr_path)
-    raw_sexp = PARSER.parse_tree_for_string(rr, rr_path).first
-    rewritten_sexp = rewrite_sexp(raw_sexp)
-    rewritten_sexp = eval(rewritten_sexp.to_s) # i STILL don't know why i need this!!
-    rb = Ruby2Ruby.new.process(rewritten_sexp)
-    File.open(rb_path, 'w') do |f|
-      f.write(rb)
+    rr_time = File.mtime(rr_path)
+    unless File.exist?(rb_path) && File.exist?(rr_path) && File.mtime(rb_path) == rr_time
+      File.makedirs(File.dirname(rb_path))
+      rr = File.read(rr_path)
+      Rails.logger.info "Parsing #{rr_path}"
+      raw_sexp = PARSER.parse_tree_for_string(rr, rr_path).first
+      rewritten_sexp = rewrite_sexp(raw_sexp)
+      rewritten_sexp = eval(rewritten_sexp.to_s) # i STILL don't know why i need this!!
+      rb = Ruby2Ruby.new.process(rewritten_sexp)
+      Rails.logger.info "Writing #{rb_path}"
+      File.open(rb_path, 'w') do |f|
+        f.write(rb)
+      end
+      File.utime(0, rr_time, rb_path)
     end
   end
     
@@ -159,7 +165,7 @@ module RewriteRails
     elsif arguments[0] == :masgn
       arguments[1][1..-1].map { |pair| pair[1] }
     else
-      raise "don't know how to extract paramater names from #{arguments}"
+      raise "don't know how to extract parameter names from #{arguments}"
     end
   end
     
