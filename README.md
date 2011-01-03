@@ -3,6 +3,15 @@ The RewriteRails Plug-In
 
 The [RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master) plug-in adds syntactic abstractions like [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "") and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md#readme "") to Rails projects [without monkey-patching](http://avdi.org/devblog/2008/02/23/why-monkeypatching-is-destroying-ruby/ "Monkeypatching is Destroying Ruby"). All of the power and convenience, none of the compatibility woes and head-aches.
 
+Status
+---
+
+![Abandoned Detroit Building](http://4.bp.blogspot.com/_KpwLRD2yHOc/SbV08STzgwI/AAAAAAAACOc/KLzn19-KAvM/s400/crumbling_dome_2.jpg)
+
+RewriteRails is not in active development at this time. RewriteRails evolved from [Rewrite](http://github.com/raganwald/rewrite). Rewrite asked the question "Can syntactic meta-programming work in Ruby?" The answer was "Yes." RewriteRails asked the question "Can syntactic meta-programming be convenient enough to be useful in an actual production Rails project?" The answer was "Yes, but..."
+
+For more information, read [A Difficult Distraction](https://github.com/raganwald/homoiconic/blob/master/2010/02/difficult_distraction.md#readme) and [Why I Write Concept Software](https://github.com/raganwald/homoiconic/blob/master/2010/09/concept.md#readme).
+
 Should You Care?
 ---
 
