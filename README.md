@@ -10,7 +10,9 @@ Status
 
 RewriteRails is not in active development at this time. RewriteRails evolved from [Rewrite](http://github.com/raganwald/rewrite). Rewrite asked the question "Can syntactic meta-programming work in Ruby?" The answer was "Yes." RewriteRails asked the question "Can syntactic meta-programming be convenient enough to be useful in an actual production Rails project?" The answer was "Yes, but..."
 
-For more information, read [A Difficult Distraction](https://github.com/raganwald/homoiconic/blob/master/2010/02/difficult_distraction.md#readme) and [Why I Write Concept Software](https://github.com/raganwald/homoiconic/blob/master/2010/09/concept.md#readme).
+For more information, read [A Difficult Distraction](https://github.com/raganwald/homoiconic/blob/master/2010/02/difficult_distraction.md#readme) and [Why I Write Concept Software](https://github.com/raganwald/homoiconic/blob/master/2010/09/concept.md#readme). Also, [Forgotten Detroit][fg] has more interesting pictures like this.
+
+[fg]: http://www.forgottendetroit.com/
 
 Should You Care?
 ---
