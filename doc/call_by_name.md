@@ -1,7 +1,7 @@
 Call by Name
 ===
 
-[RewriteRails](http://github.com/raganwald/rewrite_rails "raganwald's rewrite_rails at master - GitHub") supports creation of things that look like Kernel methods with [Call by Name](http://en.wikipedia.org/wiki/Call-by-value "Evaluation strategy - Wikipedia, the free encyclopedia") semantics. It works like this. First, you write an instance method in the `RewriteRails::CallByName` module:
+[RewriteRails](http://github.com/raganwald-deprecated/rewrite_rails "raganwald's rewrite_rails at master - GitHub") supports creation of things that look like Kernel methods with [Call by Name](http://en.wikipedia.org/wiki/Call-by-value "Evaluation strategy - Wikipedia, the free encyclopedia") semantics. It works like this. First, you write an instance method in the `RewriteRails::CallByName` module:
 
     RewriteRails::CallByName.class_eval do
       def try_these(*expressions)
@@ -137,4 +137,4 @@ My answer: *You use them as if they were instance methods defined in Kernel, so 
 
 ---
 
-[RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master#readme)
+[RewriteRails](http://github.com/raganwald-deprecated/rewrite_rails/tree/master#readme)

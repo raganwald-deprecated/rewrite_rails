@@ -26,7 +26,7 @@ But we are not interested in theory. `#into` may be equivalent to what we can ac
 Rewriting `#into`
 ---
 
-In [RewriteRails](http://github.com/raganwald/rewrite_rails "raganwald's rewrite_rails at master - GitHub"), `#into` is implemented with local assignment. So our example above:
+In [RewriteRails](http://github.com/raganwald-deprecated/rewrite_rails "raganwald's rewrite_rails at master - GitHub"), `#into` is implemented with local assignment. So our example above:
 
     (1..100).select(&:odd?).inject(&:+).into { |x| x * x }
   
@@ -55,4 +55,4 @@ The monkey-patching version also works with things that can be converted to proc
 
 ---
 
-[RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master#readme)
+[RewriteRails](http://github.com/raganwald-deprecated/rewrite_rails/tree/master#readme)

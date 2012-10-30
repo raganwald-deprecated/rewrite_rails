@@ -1,7 +1,7 @@
 Returning
 ===
 
-The [RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master) plug-in now includes its own version of #returning that overrides the #returning shipping with ActiveSupport :-o
+The [RewriteRails](http://github.com/raganwald-deprecated/rewrite_rails/tree/master) plug-in now includes its own version of #returning that overrides the #returning shipping with ActiveSupport :-o
 
 When RewriteRails is processing source code, it turns code like this:
 
@@ -36,9 +36,9 @@ Like all processors in RewriteRails, #returning is only rewritten in `.rr` files
 
 **More**
 
-* [returning.rb](http://github.com/raganwald/rewrite_rails/tree/master/lib/rewrite_rails/returning.rb "")
+* [returning.rb](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/lib/rewrite_rails/returning.rb "")
 * [Rewriting Returning in Rails](http://github.com/raganwald/homoiconic/blob/master/2009-08-29/returning.md#readme "")
 
 ---
 
-[RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master#readme)
+[RewriteRails](http://github.com/raganwald-deprecated/rewrite_rails/tree/master#readme)

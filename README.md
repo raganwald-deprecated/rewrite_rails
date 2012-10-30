@@ -1,14 +1,14 @@
 The RewriteRails Plug-In
 ========================
 
-The [RewriteRails](http://github.com/raganwald/rewrite_rails/tree/master) plug-in adds syntactic abstractions like [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile "") and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md#readme "") to Rails projects [without monkey-patching](http://avdi.org/devblog/2008/02/23/why-monkeypatching-is-destroying-ruby/ "Monkeypatching is Destroying Ruby"). All of the power and convenience, none of the compatibility woes and head-aches.
+The [RewriteRails](http://github.com/raganwald-deprecated/rewrite_rails/tree/master) plug-in adds syntactic abstractions like [Andand](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/andand.textile "") and [String to Block](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/string_to_block.md#readme "") to Rails projects [without monkey-patching](http://avdi.org/devblog/2008/02/23/why-monkeypatching-is-destroying-ruby/ "Monkeypatching is Destroying Ruby"). All of the power and convenience, none of the compatibility woes and head-aches.
 
 Status
 ---
 
 ![Abandoned Detroit Building](http://4.bp.blogspot.com/_KpwLRD2yHOc/SbV08STzgwI/AAAAAAAACOc/KLzn19-KAvM/s400/crumbling_dome_2.jpg)
 
-RewriteRails is not in active development at this time. RewriteRails evolved from [Rewrite](http://github.com/raganwald/rewrite). Rewrite asked the question "Can syntactic meta-programming work in Ruby?" The answer was "Yes." RewriteRails asked the question "Can syntactic meta-programming be convenient enough to be useful in an actual production Rails project?" The answer was "Yes, but..."
+RewriteRails is not in active development at this time. RewriteRails evolved from [Rewrite](http://github.com/raganwald-deprecated/rewrite). Rewrite asked the question "Can syntactic meta-programming work in Ruby?" The answer was "Yes." RewriteRails asked the question "Can syntactic meta-programming be convenient enough to be useful in an actual production Rails project?" The answer was "Yes, but..."
 
 For more information, read [A Difficult Distraction](https://github.com/raganwald/homoiconic/blob/master/2010/02/difficult_distraction.md#readme) and [Why I Write Concept Software](https://github.com/raganwald/homoiconic/blob/master/2010/09/concept.md#readme). Also, [Forgotten Detroit][fg] has more interesting pictures like this.
 
@@ -28,21 +28,21 @@ Q & A
 
 **What language features does RewriteRails support?**
 
-* [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile) is a lightweight Maybe Monad. The RewriteRails version provides shortcut execution semantics.
-* [Into](http://github.com/raganwald/rewrite_rails/tree/master/doc/into.md#readme) is a Thrush Combinator.
-* [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md#readme) provides a really lightweight syntax for writing pure functional blocks.
-* [Call by Name](http://github.com/raganwald/rewrite_rails/tree/master/doc/call_by_name.md#readme) is a really easy way to fake your own macros without needing to fool around with syntax trees.
-* [Extension Methods](http://github.com/raganwald/rewrite_rails/tree/master/doc/extension_methods.md#readme) lets you extend classes with your own methods without global monkey-patches.
-* [Returning](http://github.com/raganwald/rewrite_rails/tree/master/doc/returning.md#readme) improves Rails' Kestrel Combinator by handling re-assignment.
-* [Block Anaphora](http://github.com/raganwald/rewrite_rails/tree/master/doc/block_anaphora.md#readme) provides support for Groovy's `it` and Common Lisp's Anaphora.
+* [Andand](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/andand.textile) is a lightweight Maybe Monad. The RewriteRails version provides shortcut execution semantics.
+* [Into](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/into.md#readme) is a Thrush Combinator.
+* [String to Block](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/string_to_block.md#readme) provides a really lightweight syntax for writing pure functional blocks.
+* [Call by Name](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/call_by_name.md#readme) is a really easy way to fake your own macros without needing to fool around with syntax trees.
+* [Extension Methods](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/extension_methods.md#readme) lets you extend classes with your own methods without global monkey-patches.
+* [Returning](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/returning.md#readme) improves Rails' Kestrel Combinator by handling re-assignment.
+* [Block Anaphora](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/block_anaphora.md#readme) provides support for Groovy's `it` and Common Lisp's Anaphora.
 
 **Do we really have to go to all the trouble of rewriting code to support these features?**
 
-Some of rewriters--such as [Into](http://github.com/raganwald/rewrite_rails/tree/master/doc/into.md#readme) and [Extension Methods](http://github.com/raganwald/rewrite_rails/tree/master/doc/extension_methods.md#readme)--could have been implemented by opening core classes and monkey-patching, but implementing them as rewriters means that you have higher performance and [fewer conflicts with existing code](http://blog.lawrencepit.com/2009/01/11/try-as-you-might/ "Try() as you might").
+Some of rewriters--such as [Into](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/into.md#readme) and [Extension Methods](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/extension_methods.md#readme)--could have been implemented by opening core classes and monkey-patching, but implementing them as rewriters means that you have higher performance and [fewer conflicts with existing code](http://blog.lawrencepit.com/2009/01/11/try-as-you-might/ "Try() as you might").
 
-Some of the rewriters--such as [Andand](http://github.com/raganwald/rewrite_rails/tree/master/doc/andand.textile) and [String to Block](http://github.com/raganwald/rewrite_rails/tree/master/doc/string_to_block.md#readme "doc/string_to_block.md")--have better semantics when implemented using rewriting instead of opening classes.
+Some of the rewriters--such as [Andand](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/andand.textile) and [String to Block](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/string_to_block.md#readme "doc/string_to_block.md")--have better semantics when implemented using rewriting instead of opening classes.
 
-And some of the rewriters--such as [Call by Name](http://github.com/raganwald/rewrite_rails/tree/master/doc/call_by_name.md#readme) and [Block Anaphora](http://github.com/raganwald/rewrite_rails/tree/master/doc/block_anaphora.md#readme "doc/block_anaphora.md")--simply cannot be implemented without rewriting code.
+And some of the rewriters--such as [Call by Name](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/call_by_name.md#readme) and [Block Anaphora](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/block_anaphora.md#readme "doc/block_anaphora.md")--simply cannot be implemented without rewriting code.
 
 **How does it work?**
 
@@ -107,7 +107,7 @@ Second, it's better for you *today*. If someone else goes wild with monkey-patch
 
 **Sounds great! Are there any issues I should know about before jumping in with both feet?**
 
-[Yes](http://github.com/raganwald/rewrite_rails/tree/master/doc/issues.md#readme "Issues").
+[Yes](http://github.com/raganwald-deprecated/rewrite_rails/tree/master/doc/issues.md#readme "Issues").
 
 **How does this differ from the old rewrite gem?**
 

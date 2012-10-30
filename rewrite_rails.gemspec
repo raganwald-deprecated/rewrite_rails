@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.date     = "2009-01-06"
   s.summary  = "Code rewriting for Ruby on Rails projects"
   s.email    = "reg@braythwayt.com"
-  s.homepage = "hhttp://github.com/raganwald/rewrite_rails/tree/master"
+  s.homepage = "hhttp://github.com/raganwald-deprecated/rewrite_rails/tree/master"
   s.description = " Code rewriting for Ruby on Rails projects."
   s.has_rdoc = false
   s.authors  = ["Reg Braithwaite"]
